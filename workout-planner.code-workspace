@@ -1,0 +1,42 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "backend",
+      "path": "./backend"
+    },
+    {
+      "name": "frontend",
+      "path": "./frontend"
+    }
+  ],
+  "settings": {
+    "git.ignoreLimitWarning": true,
+    "files.exclude": {},
+    "editor.formatOnSave": true,
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "npm.packageManager": "npm",
+    "tslint.packageManager": "npm",
+    "color-highlight.markerType": "dot-before",
+    "workbench.colorCustomizations": {
+      "activityBar.activeBackground": "#86824a",
+      "activityBar.activeBorder": "#98c6c3",
+      "activityBar.background": "#86824a",
+      "activityBar.foreground": "#e7e7e7",
+      "activityBar.inactiveForeground": "#e7e7e799",
+      "activityBarBadge.background": "#98c6c3",
+      "activityBarBadge.foreground": "#15202b",
+      "statusBar.background": "#656238",
+      "statusBar.foreground": "#e7e7e7",
+      "statusBarItem.hoverBackground": "#86824a",
+      "titleBar.activeBackground": "#656238",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveBackground": "#65623899",
+      "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#656238"
+  }
+}

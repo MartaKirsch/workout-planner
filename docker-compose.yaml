@@ -1,0 +1,49 @@
+version: "3.3"
+services:
+  backend:
+    container_name: workout-planner-backend
+    image: node:14.17-alpine
+    env_file:
+      - ./backend/.env
+    restart: on-failure
+    command: sh -c "npm install && npm run start:dev"
+    ports:
+      - "8080:8080"
+    working_dir: /usr/app
+    volumes:
+      - "./backend/package.json:/usr/app/package.json"
+      - "./backend/package-lock.json:/usr/app/package-lock.json"
+      - "./backend/tsconfig.json:/usr/app/tsconfig.json"
+      - "./backend/tsconfig.build.json:/usr/app/tsconfig.build.json"
+      - "./backend/src:/usr/app/src"
+      - "backend_node_modules:/usr/app/node_modules"
+    environment:
+      CHOKIDAR_USEPOLLING: 1
+      CHOKIDAR_POLLINTERVAL: 3000
+      PORT_BACKEND: 8080
+  frontend:
+    container_name: workout-planner-frontend
+    image: node:14.17-alpine
+    env_file:
+      - ./frontend/.env
+    restart: on-failure
+    command: sh -c "npm install && npm start"
+    ports:
+      - "3000:3000"
+    working_dir: /usr/app
+    volumes:
+      - "./frontend/package.json:/usr/app/package.json"
+      - "./frontend/package-lock.json:/usr/app/package-lock.json"
+      - "./frontend/tsconfig.json:/usr/app/tsconfig.json"
+      - "./frontend/src:/usr/app/src:cached"
+      - "./frontend/public:/usr/app/public:cached"
+      - frontend_node_modules:/usr/app/node_modules
+    depends_on:
+      - backend
+    environment:
+      CHOKIDAR_USEPOLLING: 1
+      CHOKIDAR_POLLINTERVAL: 3000
+      PORT_FRONTEND: 3000
+volumes:
+  backend_node_modules:
+  frontend_node_modules:
