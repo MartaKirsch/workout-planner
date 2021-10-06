@@ -2,3 +2,4 @@
 :memory
 
 .DS_Store
+.env

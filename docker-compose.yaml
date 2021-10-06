@@ -1,12 +1,28 @@
 version: "3.3"
 services:
+  db:
+    container_name: workout-planner-database
+    image: "mysql:latest"
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWD}
+      MYSQL_DATABASE: workout_planner
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWD}
+      MYSQL_HOST: "localhost" # needs to be enclosed with quotes
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
   backend:
     container_name: workout-planner-backend
     image: node:14.17-alpine
     env_file:
       - ./backend/.env
     restart: on-failure
-    command: sh -c "npm install && npm run start:dev"
+    command: sh -c "npm install && npm run start:dev && npx prisma migrate dev"
     ports:
       - "8080:8080"
     working_dir: /usr/app
@@ -16,11 +32,14 @@ services:
       - "./backend/tsconfig.json:/usr/app/tsconfig.json"
       - "./backend/tsconfig.build.json:/usr/app/tsconfig.build.json"
       - "./backend/src:/usr/app/src"
+      - "./backend/prisma:/usr/app/prisma"
       - "backend_node_modules:/usr/app/node_modules"
     environment:
       CHOKIDAR_USEPOLLING: 1
       CHOKIDAR_POLLINTERVAL: 3000
       PORT_BACKEND: 8080
+    depends_on:
+      - db
   frontend:
     container_name: workout-planner-frontend
     image: node:14.17-alpine
@@ -44,6 +63,19 @@ services:
       CHOKIDAR_USEPOLLING: 1
       CHOKIDAR_POLLINTERVAL: 3000
       PORT_FRONTEND: 3000
+
+  phpmyadmin:
+    image: "phpmyadmin:5-apache"
+    restart: always
+    ports:
+      - 4000:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST="db"
+      - PMA_PORT=3306
+    depends_on:
+      - db
 volumes:
   backend_node_modules:
   frontend_node_modules:
+  dbdata:
