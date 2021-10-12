@@ -43,6 +43,11 @@ const theme = {
       placeholderColor: "var(--darker-pale-blue)",
       textColor: "var(--dark-blue)",
     },
+    button: {
+      textColor: "#FFFFFF",
+      bg: "var(--orange)",
+      hoveredBg: "var(--dark-blue)",
+    },
   },
   borders: {
     thiner: "3px",
