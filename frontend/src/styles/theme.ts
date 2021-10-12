@@ -31,6 +31,18 @@ const theme = {
       underline: "var(--tangerine)",
       underlineActive: "#FFFFFF",
     },
+    loginForm: {
+      bg: "var(--pale-blue)",
+      inactiveButtonBg: "var(--turqoise)",
+      hoveredButtonBg: "var(--tangerine)",
+      mainColor: "#000000",
+    },
+    input: {
+      bg: "#FFFFFF",
+      underlineColor: "var(--yellow)",
+      placeholderColor: "var(--darker-pale-blue)",
+      textColor: "var(--dark-blue)",
+    },
   },
   borders: {
     thiner: "3px",
