@@ -13,6 +13,8 @@ export const GlobalStyles = createGlobalStyle`
         --pale-blue: #8ECAE6;
 
         --nav-padding: 32px;
+        --iconbutton-width: 50px;
+        --logobar-height: 70px;
     }
 
     *, *::after, *::before {

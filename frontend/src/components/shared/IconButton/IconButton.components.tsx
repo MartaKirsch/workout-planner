@@ -6,18 +6,38 @@ export const IconButtonWrapper = styled.div<{
   bgColor: keyof ThemeType["colors"];
   primaryColor: keyof ThemeType["colors"]["iconButton"];
   secondaryColor: keyof ThemeType["colors"]["iconButton"];
+  bttnType?: "addButton" | "";
 }>`
   ${centeredDiv}
 
   position: relative;
   z-index: 1;
 
-  width: 50px;
-  height: 50px;
+  width: var(--iconbutton-width);
+  height: var(--iconbutton-width);
 
   background-color: ${({ bgColor, theme }) => theme.colors[bgColor]};
 
   border-radius: 7px;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    width: 100%;
+    height: 100%;
+
+    transform-origin: 50% 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease-out;
+
+    border-radius: 7px;
+
+    background-color: #fff;
+  }
 
   svg .primary {
     fill: ${({ primaryColor, theme }) => theme.colors.iconButton[primaryColor]};
@@ -26,6 +46,19 @@ export const IconButtonWrapper = styled.div<{
   svg .secondary {
     fill: ${({ secondaryColor, theme }) =>
       theme.colors.iconButton[secondaryColor]};
+  }
+
+  svg .background {
+    fill: ${({ bgColor, theme }) => theme.colors[bgColor]};
+  }
+
+  svg {
+    transition: transform 0.2s ease-out;
+  }
+
+  &:hover svg,
+  &:focus svg {
+    transform: scale(0.85);
   }
 `;
 
