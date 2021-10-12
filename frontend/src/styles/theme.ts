@@ -26,6 +26,10 @@ const theme = {
       turqoise: "var(--turqoise)",
       paleBlue: "var(--pale-blue)",
     },
+    navButton: {
+      underline: "var(--tangerine)",
+      underlineActive: "#FFFFFF",
+    },
   },
   borders: {
     thiner: "3px",

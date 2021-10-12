@@ -3,7 +3,7 @@ import { ThemeType } from "../../../styles/theme";
 import { IconButtonFrame, IconButtonWrapper } from "./IconButton.components";
 
 interface Props {
-  bgColor: keyof ThemeType["colors"];
+  bgColor?: keyof ThemeType["colors"];
   primaryColor: keyof ThemeType["colors"]["iconButton"];
   secondaryColor: keyof ThemeType["colors"]["iconButton"];
   borderColor?: keyof ThemeType["colors"]["iconButton"];
@@ -11,11 +11,11 @@ interface Props {
 }
 
 const IconButton: FunctionComponent<Props> = ({
-  bgColor,
   primaryColor,
   secondaryColor,
-  borderColor = "darkBlue",
   icon,
+  bgColor = "bg",
+  borderColor = "darkBlue",
 }) => {
   return (
     <IconButtonWrapper

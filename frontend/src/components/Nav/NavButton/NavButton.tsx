@@ -1,17 +1,34 @@
 import React, { FunctionComponent } from "react";
-import { NavButtonText, NavButtonWrapper } from "./NavButton.components";
+import { useHistory } from "react-router";
+import {
+  NavButtonText,
+  NavButtonUnderline,
+  NavButtonWrapper,
+} from "./NavButton.components";
 
 interface Props {
   iconButton: JSX.Element;
   text: string;
+  link?: string;
   onClick?: () => void | Promise<void>;
 }
 
-const NavButton: FunctionComponent<Props> = ({ iconButton, text, onClick }) => {
+const NavButton: FunctionComponent<Props> = ({
+  iconButton,
+  text,
+  onClick,
+  link,
+}) => {
+  const history = useHistory();
   return (
-    <NavButtonWrapper onClick={onClick}>
+    <NavButtonWrapper
+      onClick={onClick ? onClick : () => history.push(link ?? "")}
+    >
       {iconButton}
-      <NavButtonText>{text}</NavButtonText>
+      <NavButtonText>
+        {text}
+        <NavButtonUnderline />
+      </NavButtonText>
     </NavButtonWrapper>
   );
 };

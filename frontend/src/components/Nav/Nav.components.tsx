@@ -10,6 +10,8 @@ export const NavWrapper = styled.nav<{ isOpen: boolean }>`
   right: -236px;
   z-index: 200;
 
+  overflow-y: auto;
+
   ${({ isOpen }) =>
     isOpen &&
     css`
