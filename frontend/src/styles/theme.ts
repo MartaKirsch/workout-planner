@@ -17,6 +17,7 @@ const theme = {
     bg: "var(--pale)",
     headerBg: "var(--tangerine)",
     navBg: "var(--orange)",
+    logoUnderline: "var(--yellow)",
     iconButton: {
       yellow: "var(--yellow)",
       orange: "var(--orange)",
