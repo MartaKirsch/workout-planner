@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import MainForm from "components/shared/MainForm";
 import Input from "components/shared/Input";
+import Button from "components/shared/Button";
 
 const LoginElement: FunctionComponent = () => {
   return (
@@ -11,6 +12,7 @@ const LoginElement: FunctionComponent = () => {
         errorMssg="This is an error message"
       />
       <Input label="Password" errorMssg="This is an error message" />
+      <Button>Log in</Button>
     </MainForm>
   );
 };
