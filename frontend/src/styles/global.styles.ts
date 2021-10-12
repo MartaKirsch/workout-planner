@@ -11,6 +11,7 @@ export const GlobalStyles = createGlobalStyle`
         --dark-blue: #023047;
         --turqoise: #219EBC;
         --pale-blue: #8ECAE6;
+        --darker-pale-blue: #7DB9D5;
 
         --nav-padding: 32px;
         --iconbutton-width: 50px;
