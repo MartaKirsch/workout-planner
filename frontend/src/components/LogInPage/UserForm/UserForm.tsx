@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import LoginElement from "./LoginElement";
+import RegisterElement from "./RegisterElement";
 import {
   UserFormBttns,
   UserFormButton,
@@ -19,6 +20,7 @@ const LoginForm: FunctionComponent = () => {
         </UserFormButton>
       </UserFormBttns>
       {active === 0 && <LoginElement />}
+      {active === 1 && <RegisterElement />}
     </UserFormWrapper>
   );
 };

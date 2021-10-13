@@ -24,8 +24,13 @@ const Input: FunctionComponent<Props> = ({
 }) => {
   return (
     <InputWrapper>
-      <InputLabel>{label}</InputLabel>
-      <InputElement placeholder={placeholder} />
+      <InputLabel htmlFor={label}>{label}</InputLabel>
+      <InputElement
+        name={label}
+        id={label}
+        placeholder={placeholder}
+        type={type}
+      />
       <InputUnderline />
       <InputError>{errorMssg}</InputError>
     </InputWrapper>

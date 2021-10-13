@@ -36,10 +36,13 @@ const theme = {
       inactiveButtonBg: "var(--turqoise)",
       hoveredButtonBg: "var(--tangerine)",
       mainColor: "#000000",
+      scrollbarThumb: "var(--turqoise)",
+      scrollbarThumbActive: "var(--darker-turqoise)",
     },
     input: {
       bg: "#FFFFFF",
       underlineColor: "var(--yellow)",
+      underlineActiveColor: "var(--turqoise)",
       placeholderColor: "var(--darker-pale-blue)",
       textColor: "var(--dark-blue)",
     },

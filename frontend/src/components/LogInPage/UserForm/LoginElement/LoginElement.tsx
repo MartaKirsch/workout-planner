@@ -11,7 +11,11 @@ const LoginElement: FunctionComponent = () => {
         placeholder="Username or email..."
         errorMssg="This is an error message"
       />
-      <Input label="Password" errorMssg="This is an error message" />
+      <Input
+        label="Password"
+        errorMssg="This is an error message"
+        type="password"
+      />
       <Button>Log in</Button>
     </MainForm>
   );
