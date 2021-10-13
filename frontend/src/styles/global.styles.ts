@@ -9,7 +9,9 @@ export const GlobalStyles = createGlobalStyle`
         --tangerine: #F2CC8F;
         --pale: #F4F1DE;
         --dark-blue: #023047;
+        --lighter-dark-blue: #134158;
         --turqoise: #219EBC;
+        --darker-turqoise: #108DAB;
         --pale-blue: #8ECAE6;
         --darker-pale-blue: #7DB9D5;
 
