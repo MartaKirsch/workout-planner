@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import {
   InputElement,
   InputError,
@@ -12,7 +13,7 @@ interface Props {
   placeholder?: string;
   errorMssg?: string;
   type?: "text" | "password";
-  register?: () => {};
+  register?: UseFormRegisterReturn;
 }
 
 const Input: FunctionComponent<Props> = ({
@@ -30,6 +31,7 @@ const Input: FunctionComponent<Props> = ({
         id={label}
         placeholder={placeholder}
         type={type}
+        {...register}
       />
       <InputUnderline />
       <InputError>{errorMssg}</InputError>
