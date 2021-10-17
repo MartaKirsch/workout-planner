@@ -2,11 +2,11 @@ version: "3.3"
 services:
   db:
     container_name: workout-planner-database
-    image: "mysql:latest"
+    image: "mysql:8.0"
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWD}
-      MYSQL_DATABASE: workout_planner
+      MYSQL_DATABASE: ${DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWD}
       MYSQL_HOST: "localhost" # needs to be enclosed with quotes
@@ -38,6 +38,9 @@ services:
       CHOKIDAR_USEPOLLING: 1
       CHOKIDAR_POLLINTERVAL: 3000
       PORT_BACKEND: 8080
+      DB_USER: ${DB_USER}
+      DB_PASSWD: ${DB_PASSWD}
+      DATABASE: ${DATABASE}
     depends_on:
       - db
   frontend:

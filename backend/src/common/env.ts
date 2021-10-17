@@ -38,6 +38,10 @@ export const env = {
   PORT_BACKEND: parseIntEnv("PORT_BACKEND"),
   CLIENT_HOST: parseStringEnv("CLIENT_HOST"),
   ENABLE_CORS: parseBoolEnv("ENABLE_CORS"),
+  DB_USER: parseStringEnv("DB_USER"),
+  DB_PASSWD: parseStringEnv("DB_PASSWD"),
+  DATABASE: parseStringEnv("DATABASE"),
+  COOKIE_SECRET: parseStringEnv("COOKIE_SECRET"),
 };
 
 export type Env = typeof env;
