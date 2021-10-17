@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import LogInPage from "./LogInPage";
 import LogoBar from "./LogoBar";
 import Nav from "./Nav";
+import UserContextProvider from "./UserContext/UserContextProvider";
 
 function App() {
   return (
@@ -16,14 +17,16 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <ThemeProvider theme={theme}>
-          <AppWrapper>
-            <LogoBar />
-            <Switch>
-              <Route exact path={BASE_ROUTE} component={LogInPage} />
-              <Route path={CALENDAR_ROUTE} component={Loader} />
-            </Switch>
-            <Nav />
-          </AppWrapper>
+          <UserContextProvider>
+            <AppWrapper>
+              <LogoBar />
+              <Switch>
+                <Route exact path={BASE_ROUTE} component={LogInPage} />
+                <Route path={CALENDAR_ROUTE} component={Loader} />
+              </Switch>
+              <Nav />
+            </AppWrapper>
+          </UserContextProvider>
         </ThemeProvider>
       </BrowserRouter>
     </div>
