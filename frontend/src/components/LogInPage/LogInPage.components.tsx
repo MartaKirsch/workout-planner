@@ -1,11 +1,10 @@
 import styled from "styled-components";
+import ContentWrapper from "components/shared/ContentWrapper";
 import { columnDiv } from "styles/mixins";
 
-export const LoginPageWrapper = styled.main`
+export const LoginPageWrapper = styled(ContentWrapper)`
   ${columnDiv}
 
-  height:calc(100vh - var(--logobar-height));
-  width: 100%;
   padding: 54px;
 `;
 
