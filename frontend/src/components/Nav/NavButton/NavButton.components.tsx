@@ -32,7 +32,7 @@ export const NavButtonUnderline = styled.div`
 export const NavButtonWrapper = styled.button`
   @keyframes changeBg {
     to {
-      fill: #fff;
+      fill: #023047;
     }
   }
   ${centeredDiv}

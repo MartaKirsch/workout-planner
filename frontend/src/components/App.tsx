@@ -5,6 +5,7 @@ import { BASE_ROUTE, CALENDAR_ROUTE } from "utils/routes";
 import { GlobalStyles } from "../styles/global.styles";
 import theme from "../styles/theme";
 import { AppWrapper } from "./AppWrapper";
+import Loader from "./Loader";
 import LogInPage from "./LogInPage";
 import LogoBar from "./LogoBar";
 import Nav from "./Nav";
@@ -19,7 +20,7 @@ function App() {
             <LogoBar />
             <Switch>
               <Route exact path={BASE_ROUTE} component={LogInPage} />
-              <Route path={CALENDAR_ROUTE} component={LogInPage} />
+              <Route path={CALENDAR_ROUTE} component={Loader} />
             </Switch>
             <Nav />
           </AppWrapper>

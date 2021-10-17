@@ -36,7 +36,7 @@ export const IconButtonWrapper = styled.div<{
 
     border-radius: 7px;
 
-    background-color: #fff;
+    background-color: #023047; /* #fff ?*/
   }
 
   svg .primary {
