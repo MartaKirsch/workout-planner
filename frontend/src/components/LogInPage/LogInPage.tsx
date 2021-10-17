@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import Header from "../shared/Header";
 import UserForm from "./UserForm";
+import Header from "components/shared/Header";
 import {
   LoginPageHeaderText,
   LoginPageHeaderWrapper,
