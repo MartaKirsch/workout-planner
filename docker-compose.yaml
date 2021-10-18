@@ -22,7 +22,7 @@ services:
     env_file:
       - ./backend/.env
     restart: on-failure
-    command: sh -c "npm install  && npx prisma migrate dev && npm run start:dev"
+    command: sh -c "npm install  && npx prisma migrate deploy && npm run start:dev" # dev/deploy
     ports:
       - "8080:8080"
     working_dir: /usr/app

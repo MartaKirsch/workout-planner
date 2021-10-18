@@ -34,7 +34,7 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
     const checkUser = async () => {
       try {
         const res = await axios.get<userResponseType>(USER_URL);
-        changeUserContextValue(res.data);
+        setValues(res.data);
         setIsPending(false);
       } catch (e) {
         //TODO userNotFound type check - no error mssg, if other error - toast
@@ -43,7 +43,7 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
     };
 
     checkUser();
-  }, [changeUserContextValue]);
+  }, []);
 
   return (
     <>
