@@ -16,6 +16,12 @@ import {
   USERNAME_MIN_LENGTH,
   USERNAME_MIN_LENGTH_MSSG,
 } from "utils/const/userForm.const";
+import axios from "axios";
+import { REGISTER_USER_URL } from "utils/backend.endpoints";
+import { isDtoError } from "utils/typeGuards/isDtoError.guard";
+import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
+import { useUserContext } from "components/UserContext/useUserContext";
+import { registerUserResponseType } from "utils/types/registerUser.response";
 
 type Inputs = {
   username: string;
@@ -27,11 +33,41 @@ const RegisterElement: FunctionComponent = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const { changeUserContextValue } = useUserContext();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const res = await axios.post<registerUserResponseType>(
+        REGISTER_USER_URL,
+        data
+      );
+      changeUserContextValue(res.data);
+    } catch (e) {
+      if (!(e instanceof Error)) return;
+
+      //if it's axios error
+      if (isAxiosError(e)) {
+        //if it's field error
+        if (isDtoError<keyof Inputs>(e)) {
+          e.response?.data.errors.forEach((err) => {
+            setError(
+              err.property,
+              { type: "server", message: err.message },
+              { shouldFocus: true }
+            );
+          });
+          return;
+        }
+
+        return;
+      }
+
+      //TODO if any other error display toast with message
+    }
   };
 
   return (

@@ -1,8 +1,10 @@
-import { ValidationError, ValidationPipe } from "@nestjs/common";
+import {
+  BadRequestException,
+  ValidationError,
+  ValidationPipe,
+} from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { env } from "./common/env";
-import { DtoException } from "./exceptions/dto.exception";
-import { DtoFilter } from "./filters/dto.filter";
 import { AppModule } from "./modules/app/app.module";
 // import session from "express-session";
 // import MySQLStore from "express-mysql-session";
@@ -42,12 +44,20 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        return new DtoException(validationErrors);
+        const transformedErrors = validationErrors.map((err) => {
+          return {
+            property: err.property,
+            message: Object.entries(err.constraints)[0][1],
+          };
+        });
+        throw new BadRequestException({
+          isDtoError: true,
+          message: "Invalid data!",
+          errors: transformedErrors,
+        });
       },
     }),
   );
-
-  app.useGlobalFilters(new DtoFilter()); //first fires the last one
 
   await app.listen(env.PORT_BACKEND || 8080);
 }
