@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Post,
+  Session,
+} from "@nestjs/common";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 
@@ -12,7 +19,15 @@ export class UserController {
   }
 
   @Post("register")
-  registerUser(@Body() createUserData: CreateUserDto) {
-    return { isLoggedIn: true, username: createUserData.username };
+  async registerUser(@Body() createUserData: CreateUserDto, @Session() sess) {
+    try {
+      const res = await this.userService.register(createUserData);
+      sess.user = { id: res.id, name: res.name };
+      console.log(sess.user);
+
+      return { isLoggedIn: true, username: res.name };
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 }
