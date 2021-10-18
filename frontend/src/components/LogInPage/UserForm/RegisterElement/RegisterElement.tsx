@@ -21,7 +21,7 @@ import { REGISTER_USER_URL } from "utils/backend.endpoints";
 import { isDtoError } from "utils/typeGuards/isDtoError.guard";
 import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
 import { useUserContext } from "components/UserContext/useUserContext";
-import { registerUserResponseType } from "utils/types/registerUser.response";
+import { userResponseType } from "utils/types/user.response";
 
 type Inputs = {
   username: string;
@@ -41,10 +41,7 @@ const RegisterElement: FunctionComponent = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await axios.post<registerUserResponseType>(
-        REGISTER_USER_URL,
-        data
-      );
+      const res = await axios.post<userResponseType>(REGISTER_USER_URL, data);
       changeUserContextValue(res.data);
     } catch (e) {
       if (!(e instanceof Error)) return;

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { CreateUserDto } from "./dto/createUser.dto";
+import { LoginUserDto } from "./dto/loginUser.dto";
 
 @Injectable()
 export class UserService {
@@ -11,6 +12,27 @@ export class UserService {
         name: userData.username,
         email: userData.email,
         password: userData.password,
+      },
+    });
+    return user;
+  }
+
+  async login(userData: LoginUserDto) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                name: {
+                  equals: userData.username,
+                },
+              },
+              { email: { equals: userData.username } },
+            ],
+          },
+          { password: userData.password },
+        ],
       },
     });
     return user;

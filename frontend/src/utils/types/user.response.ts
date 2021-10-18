@@ -1,4 +1,4 @@
-export type registerUserResponseType = {
+export type userResponseType = {
   isLoggedIn: true;
   username: string;
 };
