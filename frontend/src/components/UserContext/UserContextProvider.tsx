@@ -1,9 +1,17 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import Loader from "components/Loader";
 import Modal from "components/shared/Modal";
 import UserContext, { UserContextDataType } from "./UserContext";
 import { Redirect } from "react-router";
 import { BASE_ROUTE } from "utils/routes";
+import axios from "axios";
+import { USER_URL } from "utils/backend.endpoints";
+import { userResponseType } from "utils/types/user.response";
 
 const UserContextProvider: FunctionComponent = ({ children }) => {
   const [values, setValues] = useState<UserContextDataType>({
@@ -13,19 +21,29 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
 
   const [isPending, setIsPending] = useState(true);
 
-  const changeUserContextValue = (obj: {
-    [P in keyof UserContextDataType]?: UserContextDataType[P];
-  }) => {
-    setValues({ ...values, ...obj });
-  };
+  const changeUserContextValue = useCallback(
+    (obj: {
+      [P in keyof UserContextDataType]?: UserContextDataType[P];
+    }) => {
+      setValues({ ...values, ...obj });
+    },
+    [values]
+  );
 
   useEffect(() => {
-    //TODO check if user is logged in already
+    const checkUser = async () => {
+      try {
+        const res = await axios.get<userResponseType>(USER_URL);
+        changeUserContextValue(res.data);
+        setIsPending(false);
+      } catch (e) {
+        //TODO userNotFound type check - no error mssg, if other error - toast
+        setIsPending(false);
+      }
+    };
 
-    setTimeout(() => {
-      setIsPending(false);
-    }, 1000);
-  }, []);
+    checkUser();
+  }, [changeUserContextValue]);
 
   return (
     <>
