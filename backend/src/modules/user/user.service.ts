@@ -35,6 +35,23 @@ export class UserService {
         ],
       },
     });
+
+    if (!user) {
+      const foundUser = await this.prisma.user.findFirst({
+        where: {
+          OR: [
+            {
+              name: {
+                equals: userData.username,
+              },
+            },
+            { email: { equals: userData.username } },
+          ],
+        },
+      });
+      if (!foundUser) throw new Error("noUser");
+      else throw new Error("wrongPasswd");
+    }
     return user;
   }
 }
