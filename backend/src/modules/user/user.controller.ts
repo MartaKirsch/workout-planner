@@ -27,10 +27,12 @@ export class UserController {
   @Get("log-out")
   @UseGuards(new UserGuard())
   logOut(@Session() sess) {
-    sess.destroy();
-
-    if (!sess.user) return { username: "", isLoggedIn: false };
-    throw new InternalServerErrorException("Could not log out!");
+    try {
+      sess.destroy();
+      return { username: "", isLoggedIn: false };
+    } catch (e) {
+      throw new InternalServerErrorException("Could not log out!");
+    }
   }
 
   @Post()
@@ -41,6 +43,26 @@ export class UserController {
 
       return { isLoggedIn: true, username: res.name };
     } catch (e) {
+      if (e.message === "noUser")
+        throw new InternalServerErrorException({
+          isDtoError: true,
+          errors: [
+            {
+              property: "username",
+              message: "There is no user with this name!",
+            },
+          ],
+        });
+      else if (e.message === "wrongPasswd")
+        throw new InternalServerErrorException({
+          isDtoError: true,
+          errors: [
+            {
+              property: "password",
+              message: "Wrong password!",
+            },
+          ],
+        });
       throw new InternalServerErrorException(e.message);
     }
   }
