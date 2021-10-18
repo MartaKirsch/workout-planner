@@ -15,7 +15,9 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
 
   const changeUserContextValue = (obj: {
     [P in keyof UserContextDataType]?: UserContextDataType[P];
-  }) => {};
+  }) => {
+    setValues({ ...values, ...obj });
+  };
 
   useEffect(() => {
     //TODO check if user is logged in already

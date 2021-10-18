@@ -13,6 +13,6 @@ export class UserController {
 
   @Post("register")
   registerUser(@Body() createUserData: CreateUserDto) {
-    return createUserData;
+    return { isLoggedIn: true, username: createUserData.username };
   }
 }
