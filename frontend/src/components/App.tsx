@@ -10,6 +10,8 @@ import MainPage from "./MainPage";
 import Nav from "./Nav";
 import UserContextProvider from "components/UserContext/UserContextProvider";
 import Calendar from "./Calendar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -25,6 +27,17 @@ function App() {
                 <Route path={CALENDAR_ROUTE} component={Calendar} />
               </Switch>
               <Nav />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
             </AppWrapper>
           </UserContextProvider>
         </ThemeProvider>

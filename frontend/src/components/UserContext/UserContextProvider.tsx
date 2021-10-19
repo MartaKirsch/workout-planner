@@ -12,6 +12,10 @@ import { BASE_ROUTE } from "utils/routes";
 import axios from "axios";
 import { USER_URL } from "utils/backend.endpoints";
 import { userResponseType } from "utils/types/user.response";
+import { isUserNotFoundError } from "utils/typeGuards/isUserNotFoundError.guard";
+import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
+import { toast } from "react-toastify";
+import { SESSION_CHECK_ERROR_TOASTID } from "utils/const/toast.ids";
 
 const UserContextProvider: FunctionComponent = ({ children }) => {
   const [values, setValues] = useState<UserContextDataType>({
@@ -37,8 +41,20 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
         setValues(res.data);
         setIsPending(false);
       } catch (e) {
-        //TODO userNotFound type check - no error mssg, if other error - toast
         setIsPending(false);
+
+        if (!(e instanceof Error) || isUserNotFoundError(e)) return;
+
+        if (isAxiosError(e)) {
+          toast.error(e.response?.data.message, {
+            toastId: SESSION_CHECK_ERROR_TOASTID,
+          });
+          return;
+        }
+
+        toast.error(e.message, {
+          toastId: SESSION_CHECK_ERROR_TOASTID,
+        });
       }
     };
 
