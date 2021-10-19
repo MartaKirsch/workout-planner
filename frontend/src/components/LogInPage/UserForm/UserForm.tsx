@@ -27,6 +27,8 @@ import {
   UserFormButton,
   UserFormWrapper,
 } from "./UserForm.components";
+import { toast } from "react-toastify";
+import { USER_FORM_ERROR_TOASTID } from "utils/const/toast.ids";
 
 type Inputs = {
   username: string;
@@ -68,11 +70,9 @@ const UserForm: FunctionComponent = () => {
           });
           return;
         }
-
-        return;
       }
 
-      //TODO if any other error display toast with message
+      toast.error(e.message, { toastId: USER_FORM_ERROR_TOASTID });
     }
   };
   return (

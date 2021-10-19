@@ -12,6 +12,9 @@ import { useUserContext } from "components/UserContext/useUserContext";
 import axios from "axios";
 import { LOGOUT_USER_URL } from "utils/backend.endpoints";
 import { userResponseType } from "utils/types/user.response";
+import { toast } from "react-toastify";
+import { COULD_NOT_LOG_OUT_TOASTID } from "utils/const/toast.ids";
+import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
 
 const Nav: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +26,18 @@ const Nav: FunctionComponent = () => {
       const res = await axios.get<userResponseType>(LOGOUT_USER_URL);
       changeUserContextValue(res.data);
     } catch (e) {
-      //TODO toast
+      if (!(e instanceof Error)) return;
+
+      if (isAxiosError(e)) {
+        toast.error(e.response?.data.message, {
+          toastId: COULD_NOT_LOG_OUT_TOASTID,
+        });
+        return;
+      }
+
+      toast.error(e.message, {
+        toastId: COULD_NOT_LOG_OUT_TOASTID,
+      });
     }
   };
 

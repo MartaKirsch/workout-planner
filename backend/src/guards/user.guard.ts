@@ -23,6 +23,9 @@ export class UserGuard implements CanActivate {
 
     if (sess.user) return true;
 
-    throw new BadRequestException("User was not found!");
+    throw new BadRequestException({
+      message: "User was not found!",
+      isUserNotFoundError: true,
+    });
   }
 }
