@@ -32,7 +32,7 @@ import { USER_FORM_ERROR_TOASTID } from "utils/const/toast.ids";
 
 type Inputs = {
   username: string;
-  email: string;
+  email?: string;
   password: string;
 };
 
@@ -59,19 +59,24 @@ const UserForm: FunctionComponent = () => {
     } catch (e) {
       if (!(e instanceof Error)) return;
 
+      //if it's field error
+      if (isDtoError<keyof Inputs>(e)) {
+        e.response?.data.errors.forEach((err) => {
+          setError(
+            err.property,
+            { type: "server", message: err.message },
+            { shouldFocus: true }
+          );
+        });
+        return;
+      }
+
       //if it's axios error
       if (isAxiosError(e)) {
-        //if it's field error
-        if (isDtoError<keyof Inputs>(e)) {
-          e.response?.data.errors.forEach((err) => {
-            setError(
-              err.property,
-              { type: "server", message: err.message },
-              { shouldFocus: true }
-            );
-          });
-          return;
-        }
+        toast.error(e.response?.data.message, {
+          toastId: USER_FORM_ERROR_TOASTID,
+        });
+        return;
       }
 
       toast.error(e.message, { toastId: USER_FORM_ERROR_TOASTID });
@@ -80,6 +85,8 @@ const UserForm: FunctionComponent = () => {
 
   const changeForm = useCallback(
     (num: 0 | 1) => {
+      console.log("change");
+
       setIsActive(num);
       clearErrors();
     },
