@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useCallback, useState } from "react";
 import axios from "axios";
 import Button from "components/shared/Button";
 import Input from "components/shared/Input";
@@ -38,11 +38,13 @@ type Inputs = {
 
 const UserForm: FunctionComponent = () => {
   const [active, setIsActive] = useState(0);
+
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
+    clearErrors,
   } = useForm<Inputs>();
 
   const { changeUserContextValue } = useUserContext();
@@ -75,13 +77,22 @@ const UserForm: FunctionComponent = () => {
       toast.error(e.message, { toastId: USER_FORM_ERROR_TOASTID });
     }
   };
+
+  const changeForm = useCallback(
+    (num: 0 | 1) => {
+      setIsActive(num);
+      clearErrors();
+    },
+    [clearErrors]
+  );
+
   return (
     <UserFormWrapper>
       <UserFormBttns>
-        <UserFormButton isActive={active === 0} onClick={() => setIsActive(0)}>
+        <UserFormButton isActive={active === 0} onClick={() => changeForm(0)}>
           Log in
         </UserFormButton>
-        <UserFormButton isActive={active === 1} onClick={() => setIsActive(1)}>
+        <UserFormButton isActive={active === 1} onClick={() => changeForm(1)}>
           Register
         </UserFormButton>
       </UserFormBttns>
