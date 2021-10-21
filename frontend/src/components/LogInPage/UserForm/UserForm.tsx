@@ -85,8 +85,6 @@ const UserForm: FunctionComponent = () => {
 
   const changeForm = useCallback(
     (num: 0 | 1) => {
-      console.log("change");
-
       setIsActive(num);
       clearErrors();
     },

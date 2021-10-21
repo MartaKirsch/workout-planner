@@ -12,7 +12,7 @@ const LogInPage: FunctionComponent = () => {
     <LoginPageWrapper>
       <LoginPageHeaderWrapper>
         <Header text="Let's get started!" />
-        <LoginPageHeaderText>
+        <LoginPageHeaderText aria-label="welcome-paragraph">
           You’re on a good path to start monitoring your workout routines, just
           one step more! Add your own exercises, combine them into a workout
           routine and save in your calendar.
