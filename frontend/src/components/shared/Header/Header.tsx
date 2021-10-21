@@ -7,7 +7,7 @@ interface Props {
 
 const Header: FunctionComponent<Props> = ({ text }) => {
   return (
-    <HeaderWrapper>
+    <HeaderWrapper aria-label="welcome-header">
       <HeaderText>{text}</HeaderText>
     </HeaderWrapper>
   );
