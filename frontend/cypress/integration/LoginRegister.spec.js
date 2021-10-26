@@ -1,6 +1,5 @@
 import BASE_ROUTE from "../../src/utils/routes";
 import { allFormInputErrors } from "../tools/allFormInputErrors";
-import { isInputErrorByLabel } from "../tools/isInputErrorByLabel";
 
 describe("Login/Register page", () => {
   it("displays calendar if you are logged in", () => {
@@ -14,7 +13,8 @@ describe("Login/Register page", () => {
           },
         }
       )
-      .as("checkUser");
+      .as("checkUser")
+      .reload();
 
     cy.wait("@checkUser").get("main").should("not.exist");
   });
