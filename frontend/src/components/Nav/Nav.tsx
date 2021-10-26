@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useRef, useState } from "react";
 import IconButton from "components/shared/IconButton";
 import { NavWrapper } from "./Nav.components";
 import { ReactComponent as MenuIcon } from "images/menu.svg";
@@ -7,7 +7,7 @@ import { ReactComponent as AddExerciseIcon } from "images/addExercise.svg";
 import { ReactComponent as AddRoutineIcon } from "images/addSet.svg";
 import { ReactComponent as LogoutIcon } from "images/logIn.svg";
 import NavButton from "./NavButton";
-import { CALENDAR_ROUTE } from "utils/routes";
+import { ADD_EXERCISE_ROUTE, ADD_SET_ROUTE, BASE_ROUTE } from "utils/routes";
 import { useUserContext } from "components/UserContext/useUserContext";
 import axios from "axios";
 import { LOGOUT_USER_URL } from "utils/backend.endpoints";
@@ -15,11 +15,15 @@ import { userResponseType } from "utils/types/user.response";
 import { toast } from "react-toastify";
 import { COULD_NOT_LOG_OUT_TOASTID } from "utils/const/toast.ids";
 import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
+import { useOutsideClickWithCallback } from "hooks/useOutsideClickWithCallback";
 
 const Nav: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navRef = useRef<null | HTMLElement>(null);
 
   const { isLoggedIn, changeUserContextValue } = useUserContext();
+
+  useOutsideClickWithCallback(navRef, () => setIsOpen(false));
 
   const handleLogOut = async () => {
     try {
@@ -42,7 +46,7 @@ const Nav: FunctionComponent = () => {
   };
 
   return (
-    <NavWrapper isOpen={isOpen}>
+    <NavWrapper isOpen={isOpen} ref={navRef}>
       <NavButton
         iconButton={
           <IconButton
@@ -63,7 +67,7 @@ const Nav: FunctionComponent = () => {
           />
         }
         text="Calendar"
-        link={CALENDAR_ROUTE}
+        link={BASE_ROUTE}
       />
       <NavButton
         iconButton={
@@ -74,6 +78,7 @@ const Nav: FunctionComponent = () => {
           />
         }
         text="Add exercise"
+        link={ADD_EXERCISE_ROUTE}
       />
       <NavButton
         iconButton={
@@ -84,6 +89,7 @@ const Nav: FunctionComponent = () => {
           />
         }
         text="Add routine"
+        link={ADD_SET_ROUTE}
       />
       {isLoggedIn && (
         <NavButton
