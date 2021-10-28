@@ -23,9 +23,12 @@ export class UserGuard implements CanActivate {
 
     if (sess.user) return true;
 
+    const token = request.csrfToken();
+
     throw new BadRequestException({
       message: "User was not found!",
       isUserNotFoundError: true,
+      token,
     });
   }
 }

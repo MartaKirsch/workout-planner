@@ -9,13 +9,14 @@ import Modal from "components/shared/Modal";
 import UserContext, { UserContextDataType } from "./UserContext";
 import { Redirect } from "react-router";
 import { BASE_ROUTE } from "utils/routes";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { USER_URL } from "utils/backend.endpoints";
 import { userResponseType } from "utils/types/user.response";
 import { isUserNotFoundError } from "utils/typeGuards/isUserNotFoundError.guard";
 import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
 import { toast } from "react-toastify";
 import { SESSION_CHECK_ERROR_TOASTID } from "utils/const/toast.ids";
+import { UserNotFoundErrorType } from "utils/types/userNotFound.error";
 
 const UserContextProvider: FunctionComponent = ({ children }) => {
   const [values, setValues] = useState<UserContextDataType>({
@@ -38,12 +39,19 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
     const checkUser = async () => {
       try {
         const res = await axios.get<userResponseType>(USER_URL);
-        setValues(res.data);
+        const { username, isLoggedIn } = res.data;
+
+        setValues({ username, isLoggedIn });
+        axios.defaults.headers.common["csrf-token"] = res.data.token;
         setIsPending(false);
       } catch (e) {
         setIsPending(false);
 
-        if (!(e instanceof Error) || isUserNotFoundError(e)) return;
+        if (!(e instanceof Error) || isUserNotFoundError(e)) {
+          axios.defaults.headers.common["csrf-token"] =
+            (e as AxiosError<UserNotFoundErrorType>).response?.data.token ?? "";
+          return;
+        }
 
         if (isAxiosError(e)) {
           toast.error(e.response?.data.message, {
