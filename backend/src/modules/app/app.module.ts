@@ -13,8 +13,12 @@ import { AppService } from "./app.service";
 // export class AppModule {
 //   configure(consumer: MiddlewareConsumer) {
 //     consumer
-//       .apply(csurf())
-//       .exclude({ path: "user", method: RequestMethod.POST })
+//       .apply(
+//         csurf({
+//           cookie: { httpOnly: true, sameSite: "lax" },
+//         }),
+//       )
+//       .exclude()
 //       .forRoutes("*");
 //   }
 // }

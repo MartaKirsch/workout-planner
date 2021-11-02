@@ -21,10 +21,21 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @UseGuards(new UserGuard())
+  // @UseGuards(new UserGuard())
   getUser(@Session() sess, @Req() req) {
-    const token = req.csrfToken();
-    return { username: sess.user.name, isLoggedIn: true, token };
+    try {
+      return {
+        username: sess.user.name,
+        isLoggedIn: true,
+        token: req.csrfToken(),
+      };
+    } catch (e) {
+      return {
+        username: "",
+        isLoggedIn: false,
+        token: req.csrfToken(),
+      };
+    }
   }
 
   @Get("log-out")
@@ -48,7 +59,7 @@ export class UserController {
       const res = await this.userService.login(loginUserData);
       sess.user = { id: res.id, name: res.name };
 
-      return { isLoggedIn: true, username: res.name };
+      return { isLoggedIn: true, username: res.name, token: req.csrfToken() };
     } catch (e) {
       if (e.message === "noUser")
         throw new InternalServerErrorException({
