@@ -93,8 +93,9 @@ describe("Login/Register page", () => {
     });
 
     it("displays error message when a non-existing user signs in", () => {
-      cy.findByLabelText("Username").type("{selectall}testrandomusercypress");
-      cy.findByLabelText("Password").type("{selectall}testrandompasswdcypress");
+      cy.visit("/");
+      cy.findByLabelText("Username").type("testrandomusercypress");
+      cy.findByLabelText("Password").type("testrandompasswdcypress");
       cy.get("form").findByRole("button", { name: "Log in" }).click();
 
       allFormInputErrors([true, false]);

@@ -16,6 +16,7 @@ import { isUserNotFoundError } from "utils/typeGuards/isUserNotFoundError.guard"
 import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
 import { toast } from "react-toastify";
 import { SESSION_CHECK_ERROR_TOASTID } from "utils/const/toast.ids";
+import { changeAxiosHeader } from "utils/functions/changeAxiosHeader";
 
 const UserContextProvider: FunctionComponent = ({ children }) => {
   const [values, setValues] = useState<UserContextDataType>({
@@ -38,7 +39,9 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
     const checkUser = async () => {
       try {
         const res = await axios.get<userResponseType>(USER_URL);
-        setValues(res.data);
+        const { username, isLoggedIn } = res.data;
+
+        setValues({ username, isLoggedIn });
         setIsPending(false);
       } catch (e) {
         setIsPending(false);

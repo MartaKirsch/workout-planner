@@ -5,6 +5,7 @@ import {
   Get,
   InternalServerErrorException,
   Post,
+  Req,
   Session,
   UseGuards,
 } from "@nestjs/common";
@@ -13,15 +14,28 @@ import { UserGuard } from "src/guards/user.guard";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { UserService } from "./user.service";
+import * as csrf from "csurf";
 
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @UseGuards(new UserGuard())
-  getUser(@Session() sess) {
-    return { username: sess.user.name, isLoggedIn: true };
+  // @UseGuards(new UserGuard())
+  getUser(@Session() sess, @Req() req) {
+    try {
+      return {
+        username: sess.user.name,
+        isLoggedIn: true,
+        token: req.csrfToken(),
+      };
+    } catch (e) {
+      return {
+        username: "",
+        isLoggedIn: false,
+        token: req.csrfToken(),
+      };
+    }
   }
 
   @Get("log-out")
@@ -36,12 +50,16 @@ export class UserController {
   }
 
   @Post()
-  async loginUser(@Body() loginUserData: LoginUserDto, @Session() sess) {
+  async loginUser(
+    @Body() loginUserData: LoginUserDto,
+    @Session() sess,
+    @Req() req,
+  ) {
     try {
       const res = await this.userService.login(loginUserData);
       sess.user = { id: res.id, name: res.name };
 
-      return { isLoggedIn: true, username: res.name };
+      return { isLoggedIn: true, username: res.name, token: req.csrfToken() };
     } catch (e) {
       if (e.message === "noUser")
         throw new InternalServerErrorException({
@@ -68,8 +86,15 @@ export class UserController {
   }
 
   @Post("register")
-  async registerUser(@Body() createUserData: CreateUserDto, @Session() sess) {
+  async registerUser(
+    @Body() createUserData: CreateUserDto,
+    @Session() sess,
+    @Req() req,
+  ) {
     try {
+      // const token = csrf.;
+      // console.log(csrf);
+
       const res = await this.userService.register(createUserData);
       sess.user = { id: res.id, name: res.name };
 

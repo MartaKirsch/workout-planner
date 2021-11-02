@@ -9,10 +9,17 @@ import { AppModule } from "./modules/app/app.module";
 import * as session from "express-session";
 import * as MySQLStoreCreator from "express-mysql-session";
 import * as mysql2 from "mysql2/promise";
+import * as csurf from "csurf";
+import * as cookieParser from "cookie-parser";
+import { CsrfException } from "./exceptions/csrf.exception";
+import { GlobalFilter } from "./filters/global.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: { credentials: env.ENABLE_CORS, origin: env.CLIENT_HOST },
+    cors: {
+      credentials: env.ENABLE_CORS,
+      origin: env.CLIENT_HOST,
+    },
   });
 
   //session store
@@ -22,12 +29,17 @@ async function bootstrap() {
     user: env.DB_USER,
     password: env.DB_PASSWD,
     database: env.DATABASE,
-    checkExpirationInterval: 1000 * 60 * 60 * 2,
-    expiration: 1000 * 60 * 60 * 24,
   };
 
-  const connection = mysql2.createPool(options);
-  const sessionStore = new (MySQLStoreCreator(session))({}, connection);
+  const connection = mysql2.createPool({ ...options });
+  const sessionStore = new (MySQLStoreCreator(session))(
+    {
+      ...options,
+      checkExpirationInterval: 1000 * 60 * 60 * 2,
+      expiration: 1000 * 60 * 60 * 24,
+    },
+    connection,
+  );
 
   app.use(
     session({
@@ -41,6 +53,16 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.use(cookieParser());
+
+  app.use(
+    csurf({
+      cookie: { httpOnly: true, sameSite: "lax" },
+    }),
+  );
+
+  app.useGlobalFilters(new GlobalFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({
