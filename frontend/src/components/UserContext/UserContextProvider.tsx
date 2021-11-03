@@ -16,7 +16,6 @@ import { isUserNotFoundError } from "utils/typeGuards/isUserNotFoundError.guard"
 import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
 import { toast } from "react-toastify";
 import { SESSION_CHECK_ERROR_TOASTID } from "utils/const/toast.ids";
-import { changeAxiosHeader } from "utils/functions/changeAxiosHeader";
 
 const UserContextProvider: FunctionComponent = ({ children }) => {
   const [values, setValues] = useState<UserContextDataType>({
