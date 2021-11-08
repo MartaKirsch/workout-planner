@@ -42,6 +42,7 @@ export const env = {
   DB_PASSWD: parseStringEnv("DB_PASSWD"),
   DATABASE: parseStringEnv("DATABASE"),
   COOKIE_SECRET: parseStringEnv("COOKIE_SECRET"),
+  GLOBAL_USER_PASSWD: parseStringEnv("GLOBAL_USER_PASSWD"),
 };
 
 export type Env = typeof env;

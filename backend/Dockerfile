@@ -12,6 +12,7 @@ COPY tsconfig.json tsconfig.build.json nest-cli.json ./
 # Copy app sources
 COPY src src/
 COPY prisma prisma/
+COPY public public/
 
 RUN npm build
 

@@ -20,7 +20,8 @@ enum BodyPartName {
   LEGS
   ABS
   BACK
-  FBW
+  MULTI_JOINT
+  CHEST
 }
 
 model BodyPart {
@@ -44,5 +45,6 @@ model Exercise {
   author User @relation(fields: [authorId], references: [id])
   authorId   String  
   type Type
+  image String
 }
 
