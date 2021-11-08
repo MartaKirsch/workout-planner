@@ -86,15 +86,8 @@ export class UserController {
   }
 
   @Post("register")
-  async registerUser(
-    @Body() createUserData: CreateUserDto,
-    @Session() sess,
-    @Req() req,
-  ) {
+  async registerUser(@Body() createUserData: CreateUserDto, @Session() sess) {
     try {
-      // const token = csrf.;
-      // console.log(csrf);
-
       const res = await this.userService.register(createUserData);
       sess.user = { id: res.id, name: res.name };
 

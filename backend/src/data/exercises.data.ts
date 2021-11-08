@@ -15,9 +15,7 @@ type exerciseType = {
   author: { connect: { id: string } };
   type: "STRETCH" | "EXERCISE";
   body_parts: {
-    connect:
-      | { name: "ARMS" | "LEGS" | "ABS" | "BACK" | "MULTI_JOINT" | "CHEST" }
-      | { name: "ARMS" | "LEGS" | "ABS" | "BACK" | "MULTI_JOINT" | "CHEST" }[];
+    connect: { name: BodyPart } | { name: BodyPart }[];
   };
 };
 

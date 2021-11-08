@@ -41,4 +41,12 @@ export class UserService {
       return user;
     } else throw new Error("wrongPasswd");
   }
+
+  async findUser(username: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { name: username },
+    });
+
+    return user;
+  }
 }
