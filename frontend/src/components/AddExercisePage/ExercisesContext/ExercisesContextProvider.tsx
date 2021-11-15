@@ -17,7 +17,6 @@ import { BodyPart } from "utils/types/bodyParts";
 
 const ExercisesContextProvider: FunctionComponent = ({ children }) => {
   const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState<string | boolean>(false);
   const [exercises, setExercises] = useState<ExerciseT[]>([]);
   const [skip, setSkip] = useState(0);
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -37,7 +36,6 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
 
   const loadExercises = useCallback(async () => {
     setIsPending(true);
-    setError(false);
 
     //Check if there are any previous pending requests
     if (typeof cancelToken.current != typeof undefined) {
@@ -67,14 +65,12 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
       if (!(e instanceof Error)) return;
 
       if (isAxiosError(e)) {
-        setError(e.response?.data.message ?? "");
         toast.error(e.response?.data.message, {
           toastId: LOADING_EXERCISES_ERROR,
         });
         return;
       }
 
-      setError(e.message);
       toast.error(e.message, { toastId: LOADING_EXERCISES_ERROR });
     } finally {
       setIsPending(false);
@@ -102,7 +98,7 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
 
   return (
     <ExercisesContext.Provider
-      value={{ exercises, bodyParts, types, setBodyParts, isPending }}
+      value={{ exercises, bodyParts, types, setBodyParts, isPending, setTypes }}
     >
       {children}
     </ExercisesContext.Provider>

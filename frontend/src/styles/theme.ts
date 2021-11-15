@@ -12,6 +12,10 @@ const theme = {
       light: "#FFFFFF",
       formError: "#000000",
     },
+    families: {
+      normal: "font-family: 'Montserrat', sans-serif",
+      fancy: "'Revalia', cursive",
+    },
   },
   colors: {
     bg: "var(--pale)",

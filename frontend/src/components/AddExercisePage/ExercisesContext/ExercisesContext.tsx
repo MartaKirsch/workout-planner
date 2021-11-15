@@ -7,6 +7,7 @@ const ExercisesContextDataModel: {
   bodyParts: BodyPart[];
   types: ExerciseType[];
   setBodyParts: Dispatch<SetStateAction<BodyPart[]>>;
+  setTypes: Dispatch<SetStateAction<ExerciseType[]>>;
   isPending: boolean;
 } = {
   exercises: [
@@ -23,6 +24,7 @@ const ExercisesContextDataModel: {
   bodyParts: ["ABS", "ARMS", "BACK", "CHEST", "LEGS", "MULTI_JOINT"],
   types: ["STRETCH", "EXERCISE"],
   setBodyParts: () => {},
+  setTypes: () => {},
   isPending: true,
 };
 
