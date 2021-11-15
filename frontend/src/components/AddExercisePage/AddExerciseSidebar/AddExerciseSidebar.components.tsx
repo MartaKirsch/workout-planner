@@ -6,35 +6,12 @@ import Button from "components/shared/Button";
 export const AddExerciseSidebarWrapper = styled.div`
   ${columnDiv}
 
-  padding:43px;
   width: var(--add-exercise-sidebar-width);
   height: calc(100vh - var(--logobar-height));
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
 
-  overflow-y: auto;
-
-  @-moz-document url-prefix() {
-    scrollbar-width: thin;
-    scrollbar-color: ${({ theme }) => theme.colors.addExercise.scrollbarThumb}
-      ${({ theme }) => theme.colors.addExercise.sidebarBg};
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.colors.addExercise.sidebarBg};
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.addExercise.scrollbarThumb};
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.colors.addExercise.scrollbarThumbActive};
-  }
+  position: relative;
 `;
 
 export const AddExerciseCheckboxesWrapper = styled.div<{
@@ -156,6 +133,9 @@ export const StyledSearchButton = styled(Button)`
 `;
 
 export const AddExerciseFilters = styled.div<{ isHidden?: boolean }>`
+  padding: 43px 43px 0;
+  margin-bottom: 43px;
+
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
 
   height: var(--add-exercise-filters-height);
@@ -166,30 +146,24 @@ export const AddExerciseFilters = styled.div<{ isHidden?: boolean }>`
     isHidden &&
     css`
       height: 0px;
+      padding-top: 0px !important;
       padding-bottom: 0px !important;
+      margin-bottom: 0px !important;
       overflow: hidden;
       transition: height 0.3s cubic-bezier(0, 0, 0.2, 1);
     `}
 
-  /* transform-origin: top center;
-  transform: ${({ isHidden }) => isHidden && "scaleY(0)"};
-
-  transition: transform 0.3s ease-out; */
-
   width: 100%;
-  padding-bottom: 43px;
-
-  position: sticky;
-  z-index: 2;
-  top: 0;
 `;
 
-export const FilterArrowButton = styled.button`
+export const FilterArrowButton = styled.button<{ isHidden?: boolean }>`
   ${centeredDiv}
 
   position: absolute;
-  right: -30px;
-  top: 0;
+  right: 12px;
+  top: ${({ isHidden }) =>
+    isHidden ? "21px" : "calc(var(--add-exercise-filters-height) + 10px)"};
+  z-index: 3;
 
   height: 20px;
   width: 20px;
@@ -203,9 +177,9 @@ export const FilterArrowButton = styled.button`
   }
 `;
 
-export const ExercisesList = styled.ul`
+export const ExercisesList = styled.ul<{ isHidden?: boolean }>`
   list-style-type: none;
-  padding: 0;
+  padding: ${({ isHidden }) => (isHidden ? "43px" : "0px 43px 43px")};
   margin: 0;
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
@@ -215,4 +189,29 @@ export const ExercisesList = styled.ul`
   width:100%;
 
   position: relative;
+  z-index: 2;
+
+  overflow-y: scroll;
+
+  @-moz-document url-prefix() {
+    scrollbar-width: thin;
+    scrollbar-color: ${({ theme }) => theme.colors.addExercise.scrollbarThumb}
+      ${({ theme }) => theme.colors.addExercise.sidebarBg};
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.addExercise.sidebarBg};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.addExercise.scrollbarThumb};
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.addExercise.scrollbarThumbActive};
+  }
 `;

@@ -153,14 +153,16 @@ const AddExerciseSidebar: FunctionComponent = () => {
         </AddExerciseCheckboxesWrapper>
         <StyledSearchButton>Search</StyledSearchButton>
       </AddExerciseFilters>
-      <ExercisesList>
-        <FilterArrowButton
-          onClick={() => setIsFilterHidden(!isFilterHidden)}
-          title={`${isFilterHidden ? "Show" : "Hide"} filters`}
-        >
-          {isFilterHidden ? <DownArrowIcon /> : <UpArrowIcon />}
-        </FilterArrowButton>
-        {isPending && <Loader />}
+
+      <FilterArrowButton
+        onClick={() => setIsFilterHidden(!isFilterHidden)}
+        title={`${isFilterHidden ? "Show" : "Hide"} filters`}
+        isHidden={isFilterHidden}
+      >
+        {isFilterHidden ? <DownArrowIcon /> : <UpArrowIcon />}
+      </FilterArrowButton>
+      <ExercisesList isHidden={isFilterHidden}>
+        {isPending && <Loader key="loader" />}
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore
         temporibus magnam id eos officiis illo. Voluptate voluptatum autem,
         tenetur tempora nam aliquam labore dolore quis incidunt quia similique
