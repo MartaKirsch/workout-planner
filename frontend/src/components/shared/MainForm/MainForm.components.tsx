@@ -23,7 +23,6 @@ export const MainFormInside = styled.form`
   overflow-y: auto;
 
   @-moz-document url-prefix() {
-    /* Disable scrollbar Firefox */
     scrollbar-width: thin;
     scrollbar-color: ${({ theme }) => theme.colors.loginForm.scrollbarThumb}
       ${({ theme }) => theme.colors.loginForm.bg};

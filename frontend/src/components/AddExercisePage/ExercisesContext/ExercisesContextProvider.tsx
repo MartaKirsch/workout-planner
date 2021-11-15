@@ -48,13 +48,18 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
     cancelToken.current = axios.CancelToken.source();
 
     try {
-      const res = await axios.post<ExerciseT[]>(LOAD_EXERCISES_URL, {
-        skip,
-        pattern: searchPhrase,
-        bodyParts,
-        types,
-        cancelToken: cancelToken.current.token,
-      });
+      const res = await axios.post<ExerciseT[]>(
+        LOAD_EXERCISES_URL,
+        {
+          skip,
+          pattern: searchPhrase,
+          bodyParts,
+          types,
+        },
+        {
+          cancelToken: cancelToken.current.token,
+        }
+      );
 
       console.log(res.data);
 

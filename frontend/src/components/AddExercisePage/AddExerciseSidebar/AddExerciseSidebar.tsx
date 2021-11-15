@@ -5,9 +5,13 @@ import {
   AddExerciseCheckboxesWrapper,
   AddExerciseCheckboxWrapper,
   AddExerciseSidebarWrapper,
+  AddExerciseFilters,
   AddExerciseTypeButton,
   AllCheckboxText,
   CheckboxInput,
+  ExercisesList,
+  FilterArrowButton,
+  StyledSearchButton,
   StyledTick,
 } from "./AddExerciseSidebar.components";
 import IconButton from "components/shared/IconButton";
@@ -17,6 +21,8 @@ import { ReactComponent as AbsIcon } from "images/bodyParts/abs.svg";
 import { ReactComponent as ChestIcon } from "images/bodyParts/chest.svg";
 import { ReactComponent as BackIcon } from "images/bodyParts/back.svg";
 import { ReactComponent as MultiIcon } from "images/bodyParts/multiJoint.svg";
+import { ReactComponent as DownArrowIcon } from "images/down.svg";
+import { ReactComponent as UpArrowIcon } from "images/up.svg";
 import { useExercisesContext } from "../ExercisesContext/useExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
 import Loader from "components/Loader";
@@ -56,6 +62,7 @@ const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
 ];
 
 const AddExerciseSidebar: FunctionComponent = () => {
+  const [isFilterHidden, setIsFilterHidden] = useState(false);
   const { isPending, bodyParts, setBodyParts, types, setTypes } =
     useExercisesContext();
 
@@ -95,55 +102,80 @@ const AddExerciseSidebar: FunctionComponent = () => {
 
   return (
     <AddExerciseSidebarWrapper>
-      <Input
-        label="search"
-        showLabel={false}
-        type="search"
-        placeholder="Search for exercise..."
-      />
-      <AddExerciseCheckboxesWrapper spaceBetween>
-        {IconButtons.map((item) => (
-          <AddExerciseCheckboxWrapper>
-            <IconButton
-              icon={item.icon}
-              primaryColor="orange"
-              secondaryColor="yellow"
-              borderColor={
-                bodyParts.indexOf(item.name) !== -1 ? "orange" : "darkBlue"
-              }
-            />
+      <AddExerciseFilters isHidden={isFilterHidden}>
+        <Input
+          label="search"
+          showLabel={false}
+          type="search"
+          placeholder="Search for exercise..."
+        />
+        <AddExerciseCheckboxesWrapper spaceBetween>
+          {IconButtons.map((item) => (
+            <AddExerciseCheckboxWrapper>
+              <IconButton
+                icon={item.icon}
+                primaryColor="orange"
+                secondaryColor="yellow"
+                borderColor={
+                  bodyParts.indexOf(item.name) !== -1 ? "orange" : "darkBlue"
+                }
+              />
+              <CheckboxInput
+                type="checkbox"
+                onClick={() => modifyBodyParts(item.name)}
+                title={item.title}
+              />
+            </AddExerciseCheckboxWrapper>
+          ))}
+        </AddExerciseCheckboxesWrapper>
+        <AddExerciseCheckboxesWrapper>
+          <AddExerciseTypeButton
+            isActive={types.indexOf("STRETCH") !== -1}
+            onClick={() => modifyTypes("STRETCH")}
+          >
+            Stretch
+          </AddExerciseTypeButton>
+          <AddExerciseTypeButton
+            isActive={types.indexOf("EXERCISE") !== -1}
+            onClick={() => modifyTypes("EXERCISE")}
+          >
+            Exercise
+          </AddExerciseTypeButton>
+          <AddExerciseAllCheckboxWrapper>
+            <AllCheckboxText>All</AllCheckboxText>
             <CheckboxInput
               type="checkbox"
-              onClick={() => modifyBodyParts(item.name)}
-              title={item.title}
+              defaultChecked
+              onChange={modifyAllChecked}
             />
-          </AddExerciseCheckboxWrapper>
-        ))}
-      </AddExerciseCheckboxesWrapper>
-      <AddExerciseCheckboxesWrapper>
-        <AddExerciseTypeButton
-          isActive={types.indexOf("STRETCH") !== -1}
-          onClick={() => modifyTypes("STRETCH")}
+            <StyledTick />
+          </AddExerciseAllCheckboxWrapper>
+        </AddExerciseCheckboxesWrapper>
+        <StyledSearchButton>Search</StyledSearchButton>
+      </AddExerciseFilters>
+      <ExercisesList>
+        <FilterArrowButton
+          onClick={() => setIsFilterHidden(!isFilterHidden)}
+          title={`${isFilterHidden ? "Show" : "Hide"} filters`}
         >
-          Stretch
-        </AddExerciseTypeButton>
-        <AddExerciseTypeButton
-          isActive={types.indexOf("EXERCISE") !== -1}
-          onClick={() => modifyTypes("EXERCISE")}
-        >
-          Exercise
-        </AddExerciseTypeButton>
-        <AddExerciseAllCheckboxWrapper>
-          <AllCheckboxText>All</AllCheckboxText>
-          <CheckboxInput
-            type="checkbox"
-            defaultChecked
-            onChange={modifyAllChecked}
-          />
-          <StyledTick />
-        </AddExerciseAllCheckboxWrapper>
-      </AddExerciseCheckboxesWrapper>
-      {isPending && <Loader />}
+          {isFilterHidden ? <DownArrowIcon /> : <UpArrowIcon />}
+        </FilterArrowButton>
+        {isPending && <Loader />}
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore
+        temporibus magnam id eos officiis illo. Voluptate voluptatum autem,
+        tenetur tempora nam aliquam labore dolore quis incidunt quia similique
+        laudantium provident? Lorem ipsum, dolor sit amet consectetur
+        adipisicing elit. Inventore temporibus magnam id eos officiis illo.
+        Voluptate voluptatum autem, tenetur tempora nam aliquam labore dolore
+        quis incidunt quia similique laudantium provident? Lorem ipsum, dolor
+        sit amet consectetur adipisicing elit. Inventore temporibus magnam id
+        eos officiis illo. Voluptate voluptatum autem, tenetur tempora nam
+        aliquam labore dolore quis incidunt quia similique laudantium provident?
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore
+        temporibus magnam id eos officiis illo. Voluptate voluptatum autem,
+        tenetur tempora nam aliquam labore dolore quis incidunt quia similique
+        laudantium provident?
+      </ExercisesList>
     </AddExerciseSidebarWrapper>
   );
 };

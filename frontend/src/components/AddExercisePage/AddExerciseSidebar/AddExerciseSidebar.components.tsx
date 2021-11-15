@@ -1,17 +1,40 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { centeredDiv, columnDiv, spaceBetweenDiv } from "styles/mixins";
 import { ReactComponent as TickIcon } from "images/tick.svg";
+import Button from "components/shared/Button";
 
 export const AddExerciseSidebarWrapper = styled.div`
   ${columnDiv}
 
   padding:43px;
   width: var(--add-exercise-sidebar-width);
-  height: 100%;
+  height: calc(100vh - var(--logobar-height));
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
 
   overflow-y: auto;
+
+  @-moz-document url-prefix() {
+    scrollbar-width: thin;
+    scrollbar-color: ${({ theme }) => theme.colors.addExercise.scrollbarThumb}
+      ${({ theme }) => theme.colors.addExercise.sidebarBg};
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.addExercise.sidebarBg};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.addExercise.scrollbarThumb};
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.addExercise.scrollbarThumbActive};
+  }
 `;
 
 export const AddExerciseCheckboxesWrapper = styled.div<{
@@ -26,6 +49,10 @@ export const AddExerciseCheckboxesWrapper = styled.div<{
   width: 100%;
 
   position: relative;
+
+  &:nth-child(3) {
+    margin: 20px 0 0;
+  }
 `;
 
 export const AddExerciseCheckboxWrapper = styled.div`
@@ -122,4 +149,70 @@ export const AllCheckboxText = styled.div`
   font-family: ${({ theme }) => theme.fonts.families.fancy};
   font-size: ${({ theme }) => theme.fonts.sizes.base};
   color: ${({ theme }) => theme.fonts.colors.dark};
+`;
+
+export const StyledSearchButton = styled(Button)`
+  width: 100%;
+`;
+
+export const AddExerciseFilters = styled.div<{ isHidden?: boolean }>`
+  background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
+
+  height: var(--add-exercise-filters-height);
+  will-change: height;
+  transition: height 0.3s cubic-bezier(0.4, 0, 1, 1);
+
+  ${({ isHidden }) =>
+    isHidden &&
+    css`
+      height: 0px;
+      padding-bottom: 0px !important;
+      overflow: hidden;
+      transition: height 0.3s cubic-bezier(0, 0, 0.2, 1);
+    `}
+
+  /* transform-origin: top center;
+  transform: ${({ isHidden }) => isHidden && "scaleY(0)"};
+
+  transition: transform 0.3s ease-out; */
+
+  width: 100%;
+  padding-bottom: 43px;
+
+  position: sticky;
+  z-index: 2;
+  top: 0;
+`;
+
+export const FilterArrowButton = styled.button`
+  ${centeredDiv}
+
+  position: absolute;
+  right: -30px;
+  top: 0;
+
+  height: 20px;
+  width: 20px;
+
+  background-color: ${({ theme }) => theme.colors.addExercise.formBg};
+
+  svg {
+    fill: ${({ theme }) => theme.fonts.colors.dark};
+    height: 15px;
+    width: 15px;
+  }
+`;
+
+export const ExercisesList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
+
+  ${columnDiv}
+
+  width:100%;
+
+  position: relative;
 `;

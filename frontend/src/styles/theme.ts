@@ -59,6 +59,8 @@ const theme = {
     addExercise: {
       sidebarBg: "var(--turqoise)",
       formBg: "var(--pale-blue)",
+      scrollbarThumb: "var(--dark-blue)",
+      scrollbarThumbActive: "var(--lighter-dark-blue)",
     },
   },
   borders: {
