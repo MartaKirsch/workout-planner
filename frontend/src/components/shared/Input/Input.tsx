@@ -12,8 +12,9 @@ interface Props {
   label: string;
   placeholder?: string;
   errorMssg?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "search";
   register?: UseFormRegisterReturn;
+  showLabel?: boolean;
 }
 
 const Input: FunctionComponent<Props> = ({
@@ -22,10 +23,11 @@ const Input: FunctionComponent<Props> = ({
   errorMssg,
   placeholder = `${label}...`,
   type = "text",
+  showLabel = true,
 }) => {
   return (
     <InputWrapper>
-      <InputLabel htmlFor={label}>{label}</InputLabel>
+      {showLabel && <InputLabel htmlFor={label}>{label}</InputLabel>}
       <InputElement
         name={label}
         id={label}
@@ -33,7 +35,7 @@ const Input: FunctionComponent<Props> = ({
         type={type}
         {...register}
       />
-      <InputUnderline />
+      <InputUnderline isSearch={type === "search"} />
       <InputError data-cy="input-error">{errorMssg}</InputError>
     </InputWrapper>
   );

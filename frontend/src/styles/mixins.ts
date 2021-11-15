@@ -6,6 +6,12 @@ export const centeredDiv = css`
   align-items: center;
 `;
 
+export const spaceBetweenDiv = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const centeredLeftDiv = css`
   display: flex;
   justify-content: flex-start;

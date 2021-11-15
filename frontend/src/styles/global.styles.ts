@@ -18,6 +18,7 @@ export const GlobalStyles = createGlobalStyle`
         --nav-padding: 32px;
         --iconbutton-width: 50px;
         --logobar-height: 70px;
+        --add-exercise-sidebar-width: 506px;
     }
 
     *, *::after, *::before {

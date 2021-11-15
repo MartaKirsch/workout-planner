@@ -7,5 +7,9 @@ export const LoaderWrapper = styled.div`
   svg {
     width: 100%;
     height: auto;
+
+    rect {
+      fill: ${({ theme }) => theme.colors.bg};
+    }
   }
 `;

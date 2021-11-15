@@ -4,6 +4,8 @@ import { Redirect } from "react-router";
 import { BASE_ROUTE } from "utils/routes";
 import ExercisesContextProvider from "./ExercisesContext/ExercisesContextProvider";
 import { AddExercisePageWrapper } from "./AddExercisePage.components";
+import AddExerciseSidebar from "./AddExerciseSidebar";
+import AddExerciseForm from "./AddExerciseForm";
 
 const AddExercisePage: FunctionComponent = () => {
   const { isLoggedIn } = useUserContext();
@@ -11,7 +13,10 @@ const AddExercisePage: FunctionComponent = () => {
   return (
     <AddExercisePageWrapper>
       {!isLoggedIn && <Redirect to={BASE_ROUTE} />}
-      <ExercisesContextProvider>add exercise</ExercisesContextProvider>
+      <ExercisesContextProvider>
+        <AddExerciseSidebar />
+        <AddExerciseForm />
+      </ExercisesContextProvider>
     </AddExercisePageWrapper>
   );
 };

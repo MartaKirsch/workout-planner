@@ -17,13 +17,14 @@ export const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fonts.sizes.s};
 
   cursor: pointer;
+
+  margin-bottom: 19px;
 `;
 
 export const InputElement = styled.input`
   width: 100%;
 
   padding: 26px 24px;
-  margin-top: 19px;
 
   background-color: ${({ theme }) => theme.colors.input.bg};
 
@@ -41,7 +42,7 @@ export const InputElement = styled.input`
   }
 `;
 
-export const InputUnderline = styled.div`
+export const InputUnderline = styled.div<{ isSearch?: boolean }>`
   width: 100%;
   height: ${({ theme }) => theme.borders.thick};
 
@@ -59,7 +60,10 @@ export const InputUnderline = styled.div`
     width: 100%;
     height: 100%;
 
-    background-color: ${({ theme }) => theme.colors.input.underlineActiveColor};
+    background-color: ${({ theme, isSearch }) =>
+      isSearch
+        ? theme.colors.input.underlineAltActiveColor
+        : theme.colors.input.underlineActiveColor};
 
     transform: scaleX(0);
     transform-origin: 0% 50%;

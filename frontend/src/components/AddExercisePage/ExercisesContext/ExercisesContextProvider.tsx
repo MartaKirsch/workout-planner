@@ -1,12 +1,12 @@
 import React, {
   FunctionComponent,
+  MutableRefObject,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
-import axios from "axios";
-import Loader from "components/Loader";
+import axios, { CancelTokenSource, CancelTokenStatic } from "axios";
 import { toast } from "react-toastify";
 import { LOAD_EXERCISES_URL } from "utils/backend.endpoints";
 import { LOADING_EXERCISES_ERROR } from "utils/const/toast.ids";
@@ -21,27 +21,48 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
   const [exercises, setExercises] = useState<ExerciseT[]>([]);
   const [skip, setSkip] = useState(0);
   const [searchPhrase, setSearchPhrase] = useState("");
-  const [bodyParts, setBodyParts] = useState<BodyPart[]>([]);
-  const [types, setTypes] = useState<ExerciseType[]>([]);
+  const [bodyParts, setBodyParts] = useState<BodyPart[]>([
+    "ABS",
+    "ARMS",
+    "BACK",
+    "CHEST",
+    "LEGS",
+    "MULTI_JOINT",
+  ]);
+  const [types, setTypes] = useState<ExerciseType[]>(["STRETCH", "EXERCISE"]);
 
   const oldExercises = useRef<ExerciseT[]>([]);
+
+  const cancelToken = useRef<CancelTokenStatic | CancelTokenSource>();
 
   const loadExercises = useCallback(async () => {
     setIsPending(true);
     setError(false);
+
+    //Check if there are any previous pending requests
+    if (typeof cancelToken.current != typeof undefined) {
+      (
+        cancelToken as unknown as MutableRefObject<CancelTokenSource>
+      ).current.cancel("Operation canceled due to new request.");
+    }
+
+    //Save the cancel token for the current request
+    cancelToken.current = axios.CancelToken.source();
+
     try {
       const res = await axios.post<ExerciseT[]>(LOAD_EXERCISES_URL, {
         skip,
         pattern: searchPhrase,
         bodyParts,
         types,
+        cancelToken: cancelToken.current.token,
       });
 
       console.log(res.data);
 
-      // oldExercises.current = [...oldExercises.current, ...res.data];
-      // if (skip !== 0) setExercises([...oldExercises.current]);
-      // else setExercises([...res.data]);
+      oldExercises.current = [...oldExercises.current, ...res.data];
+      if (skip !== 0) setExercises([...oldExercises.current]);
+      else setExercises([...res.data]);
     } catch (e) {
       if (!(e instanceof Error)) return;
 
@@ -58,7 +79,7 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
     } finally {
       setIsPending(false);
     }
-  }, [searchPhrase, skip]);
+  }, [searchPhrase, skip, bodyParts, types]);
 
   useEffect(() => {
     loadExercises();
@@ -68,7 +89,7 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
     setSkip(0);
     setExercises([]);
     oldExercises.current = [];
-  }, [searchPhrase]);
+  }, [searchPhrase, bodyParts, types]);
 
   // const handleScroll: React.UIEventHandler<HTMLUListElement> = (e) => {
   //   if (
@@ -80,9 +101,10 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
   // };
 
   return (
-    <ExercisesContext.Provider value={{ exercises }}>
-      {isPending && <Loader />}
-      {!isPending && !error && children}
+    <ExercisesContext.Provider
+      value={{ exercises, bodyParts, types, setBodyParts, isPending }}
+    >
+      {children}
     </ExercisesContext.Provider>
   );
 };

@@ -43,6 +43,7 @@ const theme = {
       bg: "#FFFFFF",
       underlineColor: "var(--yellow)",
       underlineActiveColor: "var(--turqoise)",
+      underlineAltActiveColor: "var(--orange)",
       placeholderColor: "var(--darker-pale-blue)",
       textColor: "var(--dark-blue)",
     },
@@ -50,6 +51,10 @@ const theme = {
       textColor: "#FFFFFF",
       bg: "var(--orange)",
       hoveredBg: "var(--dark-blue)",
+    },
+    addExercise: {
+      sidebarBg: "var(--turqoise)",
+      formBg: "var(--pale-blue)",
     },
   },
   borders: {
