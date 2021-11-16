@@ -1,4 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+} from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import {
   InputElement,
@@ -15,6 +20,8 @@ interface Props {
   type?: "text" | "password" | "search";
   register?: UseFormRegisterReturn;
   showLabel?: boolean;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input: FunctionComponent<Props> = ({
@@ -24,6 +31,8 @@ const Input: FunctionComponent<Props> = ({
   placeholder = `${label}...`,
   type = "text",
   showLabel = true,
+  value,
+  onChange,
 }) => {
   return (
     <InputWrapper>
@@ -33,6 +42,8 @@ const Input: FunctionComponent<Props> = ({
         id={label}
         placeholder={placeholder}
         type={type}
+        value={value}
+        onChange={onChange}
         {...register}
       />
       <InputUnderline isSearch={type === "search"} />

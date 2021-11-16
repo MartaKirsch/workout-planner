@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common";
 import { UserGuard } from "src/guards/user.guard";
 import { UserService } from "../user/user.service";
+import { ExerciseFiltersDto } from "./dto/exercise.filters.dto";
 import { ExerciseService } from "./exercise.service";
 
 @UseGuards(UserGuard)
@@ -20,13 +21,18 @@ export class ExerciseController {
   ) {}
 
   @Post("find")
-  async findExercises(@Req() req, @Session() sess, @Body() body) {
+  async findExercises(
+    @Req() req,
+    @Session() sess,
+    @Body() body: ExerciseFiltersDto,
+  ) {
     console.log(body);
     try {
       const user = await this.userService.findUser(sess.user.name);
       if (!user) throw Error("No user found");
       const exercises = await this.exerciseService.findExercises({
         username: user.name,
+        ...body,
       });
       return exercises;
     } catch (e) {

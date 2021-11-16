@@ -6,6 +6,7 @@ const theme = {
       s: "16px",
       base: "18px",
       m: "24px",
+      l: "26px",
     },
     colors: {
       dark: "var(--dark-blue)",
@@ -13,7 +14,7 @@ const theme = {
       formError: "#000000",
     },
     families: {
-      normal: "font-family: 'Montserrat', sans-serif",
+      normal: "'Montserrat', sans-serif",
       fancy: "'Revalia', cursive",
     },
   },
@@ -61,6 +62,13 @@ const theme = {
       formBg: "var(--pale-blue)",
       scrollbarThumb: "var(--dark-blue)",
       scrollbarThumbActive: "var(--lighter-dark-blue)",
+    },
+    exerciseTile: {
+      bg: "var(--dark-blue)",
+      activeBg: "var(--lighter-dark-blue)",
+      color: "white",
+      tagColor: "var(--pale-blue)",
+      imgPlaceholderBg: "var(--pale-blue)",
     },
   },
   borders: {

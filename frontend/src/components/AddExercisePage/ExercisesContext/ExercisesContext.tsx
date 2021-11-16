@@ -6,9 +6,13 @@ const ExercisesContextDataModel: {
   exercises: ExerciseT[];
   bodyParts: BodyPart[];
   types: ExerciseType[];
+  searchPhrase: string;
   setBodyParts: Dispatch<SetStateAction<BodyPart[]>>;
   setTypes: Dispatch<SetStateAction<ExerciseType[]>>;
+  setSkip: Dispatch<SetStateAction<number>>;
+  setSearchPhrase: Dispatch<SetStateAction<string>>;
   isPending: boolean;
+  loadExercises: (newSkip?: number) => Promise<void>;
 } = {
   exercises: [
     {
@@ -17,15 +21,23 @@ const ExercisesContextDataModel: {
       description: "",
       image: "",
       type: "EXERCISE",
-      body_parts: ["ARMS", "CHEST"],
+      body_parts: [{ name: "ARMS" }, { name: "CHEST" }],
       authorId: "global",
     },
   ],
   bodyParts: ["ABS", "ARMS", "BACK", "CHEST", "LEGS", "MULTI_JOINT"],
   types: ["STRETCH", "EXERCISE"],
+  searchPhrase: "",
   setBodyParts: () => {},
   setTypes: () => {},
+  setSkip: () => {},
+  setSearchPhrase: () => {},
   isPending: true,
+  loadExercises: () => {
+    return new Promise((res) => {
+      res();
+    });
+  },
 };
 
 export type ExercisesContextDataType = typeof ExercisesContextDataModel;

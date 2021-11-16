@@ -27,6 +27,8 @@ import { useExercisesContext } from "../ExercisesContext/useExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
 import Loader from "components/Loader";
 import { ExerciseType } from "utils/types/exercise";
+import { checkIsUlElement } from "utils/functions/checkIsUlElement";
+import ExerciseTile from "components/AddExercisePage/AddExerciseSidebar/ExerciseTile";
 
 const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
   {
@@ -63,8 +65,18 @@ const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
 
 const AddExerciseSidebar: FunctionComponent = () => {
   const [isFilterHidden, setIsFilterHidden] = useState(false);
-  const { isPending, bodyParts, setBodyParts, types, setTypes } =
-    useExercisesContext();
+  const {
+    isPending,
+    bodyParts,
+    setBodyParts,
+    types,
+    setTypes,
+    exercises,
+    setSkip,
+    loadExercises,
+    searchPhrase,
+    setSearchPhrase,
+  } = useExercisesContext();
 
   const modifyBodyParts = (part: BodyPart) => {
     //if it is selected already
@@ -100,18 +112,36 @@ const AddExerciseSidebar: FunctionComponent = () => {
     }
   };
 
+  const handleScroll: React.UIEventHandler<HTMLUListElement> = (e) => {
+    if (
+      checkIsUlElement(e.target) &&
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
+    ) {
+      setSkip(exercises.length);
+      loadExercises(exercises.length);
+    }
+  };
+
   return (
     <AddExerciseSidebarWrapper>
-      <AddExerciseFilters isHidden={isFilterHidden}>
+      <AddExerciseFilters
+        isHidden={isFilterHidden}
+        onSubmit={(e) => {
+          e.preventDefault();
+          loadExercises();
+        }}
+      >
         <Input
           label="search"
           showLabel={false}
           type="search"
           placeholder="Search for exercise..."
+          value={searchPhrase}
+          onChange={(e) => setSearchPhrase(e.target.value)}
         />
         <AddExerciseCheckboxesWrapper spaceBetween>
           {IconButtons.map((item) => (
-            <AddExerciseCheckboxWrapper>
+            <AddExerciseCheckboxWrapper key={item.name}>
               <IconButton
                 icon={item.icon}
                 primaryColor="orange"
@@ -130,12 +160,14 @@ const AddExerciseSidebar: FunctionComponent = () => {
         </AddExerciseCheckboxesWrapper>
         <AddExerciseCheckboxesWrapper>
           <AddExerciseTypeButton
+            type="button"
             isActive={types.indexOf("STRETCH") !== -1}
             onClick={() => modifyTypes("STRETCH")}
           >
             Stretch
           </AddExerciseTypeButton>
           <AddExerciseTypeButton
+            type="button"
             isActive={types.indexOf("EXERCISE") !== -1}
             onClick={() => modifyTypes("EXERCISE")}
           >
@@ -151,7 +183,7 @@ const AddExerciseSidebar: FunctionComponent = () => {
             <StyledTick />
           </AddExerciseAllCheckboxWrapper>
         </AddExerciseCheckboxesWrapper>
-        <StyledSearchButton>Search</StyledSearchButton>
+        <StyledSearchButton type="submit">Search</StyledSearchButton>
       </AddExerciseFilters>
 
       <FilterArrowButton
@@ -161,22 +193,18 @@ const AddExerciseSidebar: FunctionComponent = () => {
       >
         {isFilterHidden ? <DownArrowIcon /> : <UpArrowIcon />}
       </FilterArrowButton>
-      <ExercisesList isHidden={isFilterHidden}>
+      <ExercisesList isHidden={isFilterHidden} onScroll={handleScroll}>
+        {exercises &&
+          exercises.map((exercise) => (
+            <ExerciseTile
+              key={exercise.id}
+              name={exercise.name}
+              imgSrc={exercise.image}
+              type={exercise.type}
+              bodyParts={exercise.body_parts}
+            />
+          ))}
         {isPending && <Loader key="loader" />}
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore
-        temporibus magnam id eos officiis illo. Voluptate voluptatum autem,
-        tenetur tempora nam aliquam labore dolore quis incidunt quia similique
-        laudantium provident? Lorem ipsum, dolor sit amet consectetur
-        adipisicing elit. Inventore temporibus magnam id eos officiis illo.
-        Voluptate voluptatum autem, tenetur tempora nam aliquam labore dolore
-        quis incidunt quia similique laudantium provident? Lorem ipsum, dolor
-        sit amet consectetur adipisicing elit. Inventore temporibus magnam id
-        eos officiis illo. Voluptate voluptatum autem, tenetur tempora nam
-        aliquam labore dolore quis incidunt quia similique laudantium provident?
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore
-        temporibus magnam id eos officiis illo. Voluptate voluptatum autem,
-        tenetur tempora nam aliquam labore dolore quis incidunt quia similique
-        laudantium provident?
       </ExercisesList>
     </AddExerciseSidebarWrapper>
   );

@@ -31,79 +31,93 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
   const [types, setTypes] = useState<ExerciseType[]>(["STRETCH", "EXERCISE"]);
 
   const oldExercises = useRef<ExerciseT[]>([]);
-
   const cancelToken = useRef<CancelTokenStatic | CancelTokenSource>();
+  const init = useRef(true);
 
-  const loadExercises = useCallback(async () => {
-    setIsPending(true);
+  const loadExercises = useCallback(
+    async (newSkip?: number) => {
+      setIsPending(true);
+      console.log("load");
 
-    //Check if there are any previous pending requests
-    if (typeof cancelToken.current != typeof undefined) {
-      (
-        cancelToken as unknown as MutableRefObject<CancelTokenSource>
-      ).current.cancel("Operation canceled due to new request.");
-    }
-
-    //Save the cancel token for the current request
-    cancelToken.current = axios.CancelToken.source();
-
-    try {
-      const res = await axios.post<ExerciseT[]>(
-        LOAD_EXERCISES_URL,
-        {
-          skip,
-          pattern: searchPhrase,
-          bodyParts,
-          types,
-        },
-        {
-          cancelToken: cancelToken.current.token,
-        }
-      );
-
-      console.log(res.data);
-
-      oldExercises.current = [...oldExercises.current, ...res.data];
-      if (skip !== 0) setExercises([...oldExercises.current]);
-      else setExercises([...res.data]);
-    } catch (e) {
-      if (!(e instanceof Error)) return;
-
-      if (isAxiosError(e)) {
-        toast.error(e.response?.data.message, {
-          toastId: LOADING_EXERCISES_ERROR,
-        });
-        return;
+      //Check if there are any previous pending requests
+      if (typeof cancelToken.current != typeof undefined) {
+        (
+          cancelToken as unknown as MutableRefObject<CancelTokenSource>
+        ).current.cancel("Operation canceled due to new request.");
       }
 
-      toast.error(e.message, { toastId: LOADING_EXERCISES_ERROR });
-    } finally {
-      setIsPending(false);
-    }
-  }, [searchPhrase, skip, bodyParts, types]);
+      //Save the cancel token for the current request
+      cancelToken.current = axios.CancelToken.source();
+
+      try {
+        const res = await axios.post<ExerciseT[]>(
+          LOAD_EXERCISES_URL,
+          {
+            skip: newSkip ?? skip,
+            pattern: searchPhrase,
+            bodyParts,
+            types,
+          },
+          {
+            cancelToken: cancelToken.current.token,
+          }
+        );
+
+        console.log(newSkip ?? skip);
+
+        console.log(res.data);
+        console.log(oldExercises.current);
+
+        oldExercises.current = [...oldExercises.current, ...res.data];
+        if (skip !== 0) setExercises([...oldExercises.current]);
+        else if (newSkip && newSkip !== 0)
+          setExercises([...oldExercises.current]);
+        else setExercises([...res.data]);
+      } catch (e) {
+        if (!(e instanceof Error)) return;
+
+        if (isAxiosError(e)) {
+          toast.error(e.response?.data.message, {
+            toastId: LOADING_EXERCISES_ERROR,
+          });
+          return;
+        }
+
+        toast.error(e.message, { toastId: LOADING_EXERCISES_ERROR });
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [searchPhrase, skip, bodyParts, types]
+  );
 
   useEffect(() => {
-    loadExercises();
+    if (init.current) {
+      loadExercises();
+      init.current = false;
+    }
   }, [loadExercises]);
 
   useEffect(() => {
     setSkip(0);
-    setExercises([]);
+    // setExercises([]);
     oldExercises.current = [];
   }, [searchPhrase, bodyParts, types]);
 
-  // const handleScroll: React.UIEventHandler<HTMLUListElement> = (e) => {
-  //   if (
-  //     checkIsUlElement(e.target) &&
-  //     e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
-  //   ) {
-  //     setSkip(todos.length);
-  //   }
-  // };
-
   return (
     <ExercisesContext.Provider
-      value={{ exercises, bodyParts, types, setBodyParts, isPending, setTypes }}
+      value={{
+        exercises,
+        bodyParts,
+        types,
+        setBodyParts,
+        isPending,
+        setTypes,
+        setSkip,
+        loadExercises,
+        searchPhrase,
+        setSearchPhrase,
+      }}
     >
       {children}
     </ExercisesContext.Provider>

@@ -132,7 +132,7 @@ export const StyledSearchButton = styled(Button)`
   width: 100%;
 `;
 
-export const AddExerciseFilters = styled.div<{ isHidden?: boolean }>`
+export const AddExerciseFilters = styled.form<{ isHidden?: boolean }>`
   padding: 43px 43px 0;
   margin-bottom: 43px;
 
