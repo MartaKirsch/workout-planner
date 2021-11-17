@@ -8,6 +8,7 @@ const Loader: FunctionComponent = () => {
 
   useEffect(() => {
     const calendars = ref?.current?.children;
+
     const tl = gsap.timeline({ repeat: -1 });
 
     if (!calendars) return;

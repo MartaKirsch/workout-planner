@@ -41,10 +41,7 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
         const { username, isLoggedIn } = res.data;
 
         setValues({ username, isLoggedIn });
-        setIsPending(false);
       } catch (e) {
-        setIsPending(false);
-
         if (!(e instanceof Error) || isUserNotFoundError(e)) return;
 
         if (isAxiosError(e)) {
@@ -57,6 +54,8 @@ const UserContextProvider: FunctionComponent = ({ children }) => {
         toast.error(e.message, {
           toastId: SESSION_CHECK_ERROR_TOASTID,
         });
+      } finally {
+        setIsPending(false);
       }
     };
 

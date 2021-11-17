@@ -11,6 +11,7 @@ import {
   ExerciseTileTagName,
   ExerciseTileWrapper,
   ExerciseTileBodyPart,
+  ExerciseTileTippyImage,
 } from "./ExerciseTile.components";
 import { ReactComponent as ArmsIcon } from "images/smBodyParts/arms.svg";
 import { ReactComponent as LegsIcon } from "images/smBodyParts/legs.svg";
@@ -18,6 +19,8 @@ import { ReactComponent as AbsIcon } from "images/smBodyParts/abs.svg";
 import { ReactComponent as ChestIcon } from "images/smBodyParts/chest.svg";
 import { ReactComponent as BackIcon } from "images/smBodyParts/back.svg";
 import { ReactComponent as MultiIcon } from "images/smBodyParts/multiJoint.svg";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css"; // optional
 interface Props {
   name: string;
   imgSrc: string;
@@ -55,7 +58,17 @@ const ExerciseTile: FunctionComponent<Props> = ({
       <ExerciseTileWrapper>
         <ExerciseTileRow>
           <ExerciseTileImageWrapper>
-            <ExerciseTileImage src={`${IMAGES_URL}/${imgSrc}`} />
+            <Tippy
+              content={
+                <ExerciseTileTippyImage
+                  src={`${IMAGES_URL}/${imgSrc}`}
+                  alt="exercise"
+                />
+              }
+              delay={500}
+            >
+              <ExerciseTileImage src={`${IMAGES_URL}/${imgSrc}`} />
+            </Tippy>
           </ExerciseTileImageWrapper>
           <ExerciseTileCol>
             <ExerciseTileName>{name}</ExerciseTileName>

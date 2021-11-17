@@ -87,6 +87,11 @@ export const ExerciseTileImage = styled.img`
   width: auto;
 `;
 
+export const ExerciseTileTippyImage = styled.img`
+  height: auto;
+  width: 300px;
+`;
+
 export const ExerciseTileName = styled.div`
   color: ${({ theme }) => theme.colors.exerciseTile.color};
   font-size: ${({ theme }) => theme.fonts.sizes.l};
