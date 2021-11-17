@@ -13,7 +13,7 @@ const ExerciseContextWithSidebar: FunctionComponent<Props> = ({
   return (
     <>
       <ExercisesContextProvider>
-        <ExerciseSidebar />
+        <ExerciseSidebar onTileClick={onTileClick} />
         {children}
       </ExercisesContextProvider>
     </>
