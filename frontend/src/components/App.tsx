@@ -8,7 +8,7 @@ import { AppWrapper } from "components/AppWrapper";
 import LogoBar from "components/LogoBar";
 import MainPage from "components/MainPage";
 import Nav from "components/Nav";
-import UserContextProvider from "components/UserContext/UserContextProvider";
+import UserContextProvider from "context/UserContext/UserContextProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddSetPage from "components/AddSetPage";

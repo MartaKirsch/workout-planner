@@ -26,6 +26,7 @@ interface Props {
   imgSrc: string;
   type: string;
   bodyParts: { name: BodyPart }[];
+  onClick?: () => void | Promise<void>;
 }
 
 const ExerciseTile: FunctionComponent<Props> = ({
@@ -33,6 +34,7 @@ const ExerciseTile: FunctionComponent<Props> = ({
   imgSrc,
   type,
   bodyParts,
+  onClick,
 }) => {
   const renderIcon = useCallback((part: BodyPart) => {
     switch (part) {
@@ -55,7 +57,7 @@ const ExerciseTile: FunctionComponent<Props> = ({
 
   return (
     <ExerciseTileLi>
-      <ExerciseTileWrapper>
+      <ExerciseTileWrapper onClick={onClick}>
         <ExerciseTileRow>
           <ExerciseTileImageWrapper>
             <Tippy

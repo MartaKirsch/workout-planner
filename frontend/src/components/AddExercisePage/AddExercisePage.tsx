@@ -1,11 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { useUserContext } from "components/UserContext/useUserContext";
+import { useUserContext } from "context/UserContext/useUserContext";
 import { Redirect } from "react-router";
 import { BASE_ROUTE } from "utils/routes";
-import ExercisesContextProvider from "./ExercisesContext/ExercisesContextProvider";
 import { AddExercisePageWrapper } from "./AddExercisePage.components";
-import AddExerciseSidebar from "./AddExerciseSidebar";
 import AddExerciseForm from "./AddExerciseForm";
+import ExerciseContextWithSidebar from "components/shared/ExerciseContextWithSidebar";
 
 const AddExercisePage: FunctionComponent = () => {
   const { isLoggedIn } = useUserContext();
@@ -13,10 +12,9 @@ const AddExercisePage: FunctionComponent = () => {
   return (
     <AddExercisePageWrapper>
       {!isLoggedIn && <Redirect to={BASE_ROUTE} />}
-      <ExercisesContextProvider>
-        <AddExerciseSidebar />
+      <ExerciseContextWithSidebar>
         <AddExerciseForm />
-      </ExercisesContextProvider>
+      </ExerciseContextWithSidebar>
     </AddExercisePageWrapper>
   );
 };

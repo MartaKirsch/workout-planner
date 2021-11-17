@@ -3,7 +3,7 @@ import axios from "axios";
 import Button from "components/shared/Button";
 import Input from "components/shared/Input";
 import MainForm from "components/shared/MainForm";
-import { useUserContext } from "components/UserContext/useUserContext";
+import { useUserContext } from "context/UserContext/useUserContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { REGISTER_USER_URL, USER_URL } from "utils/backend.endpoints";
 import {

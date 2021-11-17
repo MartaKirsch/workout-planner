@@ -3,10 +3,10 @@ import { centeredDiv, columnDiv, spaceBetweenDiv } from "styles/mixins";
 import { ReactComponent as TickIcon } from "images/tick.svg";
 import Button from "components/shared/Button";
 
-export const AddExerciseSidebarWrapper = styled.div`
+export const ExerciseSidebarWrapper = styled.div`
   ${columnDiv}
 
-  width: var(--add-exercise-sidebar-width);
+  width: var(---exercise-sidebar-width);
   height: calc(100vh - var(--logobar-height));
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
@@ -14,7 +14,7 @@ export const AddExerciseSidebarWrapper = styled.div`
   position: relative;
 `;
 
-export const AddExerciseCheckboxesWrapper = styled.div<{
+export const ExerciseCheckboxesWrapper = styled.div<{
   spaceBetween?: boolean;
 }>`
   ${({ spaceBetween }) => (spaceBetween ? spaceBetweenDiv : centeredDiv)}
@@ -32,7 +32,7 @@ export const AddExerciseCheckboxesWrapper = styled.div<{
   }
 `;
 
-export const AddExerciseCheckboxWrapper = styled.div`
+export const ExerciseCheckboxWrapper = styled.div`
   height: 50px;
   width: 50px;
 
@@ -68,7 +68,7 @@ export const CheckboxInput = styled.input`
   }
 `;
 
-export const AddExerciseTypeButton = styled.button<{ isActive?: boolean }>`
+export const ExerciseTypeButton = styled.button<{ isActive?: boolean }>`
   padding: 10px;
   margin: 0;
 
@@ -105,7 +105,7 @@ export const AddExerciseTypeButton = styled.button<{ isActive?: boolean }>`
   }
 `;
 
-export const AddExerciseAllCheckboxWrapper = styled.div`
+export const ExerciseAllCheckboxWrapper = styled.div`
   ${centeredDiv}
 
   height: 20px;
@@ -132,13 +132,13 @@ export const StyledSearchButton = styled(Button)`
   width: 100%;
 `;
 
-export const AddExerciseFilters = styled.form<{ isHidden?: boolean }>`
+export const ExerciseFilters = styled.form<{ isHidden?: boolean }>`
   padding: 43px 43px 0;
   margin-bottom: 43px;
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
 
-  height: var(--add-exercise-filters-height);
+  height: var(---exercise-filters-height);
   will-change: height;
   transition: height 0.3s cubic-bezier(0.4, 0, 1, 1);
 
@@ -146,8 +146,8 @@ export const AddExerciseFilters = styled.form<{ isHidden?: boolean }>`
     isHidden &&
     css`
       height: 0px;
-      padding-top: 0px !important;
-      padding-bottom: 0px !important;
+      ping-top: 0px !important;
+      ping-bottom: 0px !important;
       margin-bottom: 0px !important;
       overflow: hidden;
       transition: height 0.3s cubic-bezier(0, 0, 0.2, 1);
@@ -162,7 +162,7 @@ export const FilterArrowButton = styled.button<{ isHidden?: boolean }>`
   position: absolute;
   right: 12px;
   top: ${({ isHidden }) =>
-    isHidden ? "21px" : "calc(var(--add-exercise-filters-height) + 10px)"};
+    isHidden ? "21px" : "calc(var(---exercise-filters-height) + 10px)"};
   z-index: 3;
 
   height: 20px;

@@ -1,19 +1,19 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
 import Input from "components/shared/Input";
 import {
-  AddExerciseAllCheckboxWrapper,
-  AddExerciseCheckboxesWrapper,
-  AddExerciseCheckboxWrapper,
-  AddExerciseSidebarWrapper,
-  AddExerciseFilters,
-  AddExerciseTypeButton,
+  ExerciseAllCheckboxWrapper,
+  ExerciseCheckboxesWrapper,
+  ExerciseCheckboxWrapper,
+  ExerciseSidebarWrapper,
+  ExerciseFilters,
+  ExerciseTypeButton,
   AllCheckboxText,
   CheckboxInput,
   ExercisesList,
   FilterArrowButton,
   StyledSearchButton,
   StyledTick,
-} from "./AddExerciseSidebar.components";
+} from "./ExerciseSidebar.components";
 import IconButton from "components/shared/IconButton";
 import { ReactComponent as ArmsIcon } from "images/bodyParts/arms.svg";
 import { ReactComponent as LegsIcon } from "images/bodyParts/legs.svg";
@@ -23,12 +23,12 @@ import { ReactComponent as BackIcon } from "images/bodyParts/back.svg";
 import { ReactComponent as MultiIcon } from "images/bodyParts/multiJoint.svg";
 import { ReactComponent as DownArrowIcon } from "images/down.svg";
 import { ReactComponent as UpArrowIcon } from "images/up.svg";
-import { useExercisesContext } from "../ExercisesContext/useExercisesContext";
+import { useExercisesContext } from "../../../context/ExercisesContext/useExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
 import Loader from "components/Loader";
 import { ExerciseType } from "utils/types/exercise";
 import { checkIsUlElement } from "utils/functions/checkIsUlElement";
-import ExerciseTile from "components/AddExercisePage/AddExerciseSidebar/ExerciseTile";
+import ExerciseTile from "components/shared/ExerciseSidebar/ExerciseTile";
 
 const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
   {
@@ -63,7 +63,11 @@ const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
   },
 ];
 
-const AddExerciseSidebar: FunctionComponent = () => {
+interface Props {
+  onTileClick?: () => void | Promise<void>;
+}
+
+const ExerciseSidebar: FunctionComponent<Props> = ({ onTileClick }) => {
   const [isFilterHidden, setIsFilterHidden] = useState(false);
   const {
     isPending,
@@ -123,8 +127,8 @@ const AddExerciseSidebar: FunctionComponent = () => {
   };
 
   return (
-    <AddExerciseSidebarWrapper>
-      <AddExerciseFilters
+    <ExerciseSidebarWrapper>
+      <ExerciseFilters
         isHidden={isFilterHidden}
         onSubmit={(e) => {
           e.preventDefault();
@@ -139,9 +143,9 @@ const AddExerciseSidebar: FunctionComponent = () => {
           value={searchPhrase}
           onChange={(e) => setSearchPhrase(e.target.value)}
         />
-        <AddExerciseCheckboxesWrapper spaceBetween>
+        <ExerciseCheckboxesWrapper spaceBetween>
           {IconButtons.map((item) => (
-            <AddExerciseCheckboxWrapper key={item.name}>
+            <ExerciseCheckboxWrapper key={item.name}>
               <IconButton
                 icon={item.icon}
                 primaryColor="orange"
@@ -155,25 +159,25 @@ const AddExerciseSidebar: FunctionComponent = () => {
                 onClick={() => modifyBodyParts(item.name)}
                 title={item.title}
               />
-            </AddExerciseCheckboxWrapper>
+            </ExerciseCheckboxWrapper>
           ))}
-        </AddExerciseCheckboxesWrapper>
-        <AddExerciseCheckboxesWrapper>
-          <AddExerciseTypeButton
+        </ExerciseCheckboxesWrapper>
+        <ExerciseCheckboxesWrapper>
+          <ExerciseTypeButton
             type="button"
             isActive={types.indexOf("STRETCH") !== -1}
             onClick={() => modifyTypes("STRETCH")}
           >
             Stretch
-          </AddExerciseTypeButton>
-          <AddExerciseTypeButton
+          </ExerciseTypeButton>
+          <ExerciseTypeButton
             type="button"
             isActive={types.indexOf("EXERCISE") !== -1}
             onClick={() => modifyTypes("EXERCISE")}
           >
             Exercise
-          </AddExerciseTypeButton>
-          <AddExerciseAllCheckboxWrapper>
+          </ExerciseTypeButton>
+          <ExerciseAllCheckboxWrapper>
             <AllCheckboxText>All</AllCheckboxText>
             <CheckboxInput
               type="checkbox"
@@ -181,10 +185,10 @@ const AddExerciseSidebar: FunctionComponent = () => {
               onChange={modifyAllChecked}
             />
             <StyledTick />
-          </AddExerciseAllCheckboxWrapper>
-        </AddExerciseCheckboxesWrapper>
+          </ExerciseAllCheckboxWrapper>
+        </ExerciseCheckboxesWrapper>
         <StyledSearchButton type="submit">Search</StyledSearchButton>
-      </AddExerciseFilters>
+      </ExerciseFilters>
 
       <FilterArrowButton
         onClick={() => setIsFilterHidden(!isFilterHidden)}
@@ -202,12 +206,13 @@ const AddExerciseSidebar: FunctionComponent = () => {
               imgSrc={exercise.image}
               type={exercise.type}
               bodyParts={exercise.body_parts}
+              onClick={onTileClick}
             />
           ))}
         {isPending && <Loader key="loader" />}
       </ExercisesList>
-    </AddExerciseSidebarWrapper>
+    </ExerciseSidebarWrapper>
   );
 };
 
-export default AddExerciseSidebar;
+export default ExerciseSidebar;

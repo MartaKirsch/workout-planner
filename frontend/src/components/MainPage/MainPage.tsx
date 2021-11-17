@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { useUserContext } from "components/UserContext/useUserContext";
+import { useUserContext } from "context/UserContext/useUserContext";
 import LogInPage from "components/LogInPage";
 import Calendar from "components/Calendar";
 
