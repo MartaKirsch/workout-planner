@@ -6,7 +6,7 @@ import Button from "components/shared/Button";
 export const ExerciseSidebarWrapper = styled.div`
   ${columnDiv}
 
-  width: var(---exercise-sidebar-width);
+  width: var(--exercise-sidebar-width);
   height: calc(100vh - var(--logobar-height));
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
@@ -29,19 +29,6 @@ export const ExerciseCheckboxesWrapper = styled.div<{
 
   &:nth-child(3) {
     margin: 20px 0 0;
-  }
-`;
-
-export const ExerciseCheckboxWrapper = styled.div`
-  height: 50px;
-  width: 50px;
-
-  position: relative;
-
-  & > div {
-    position: absolute;
-    top: 0;
-    left: 0;
   }
 `;
 
@@ -138,7 +125,7 @@ export const ExerciseFilters = styled.form<{ isHidden?: boolean }>`
 
   background-color: ${({ theme }) => theme.colors.addExercise.sidebarBg};
 
-  height: var(---exercise-filters-height);
+  height: var(--exercise-filters-height);
   will-change: height;
   transition: height 0.3s cubic-bezier(0.4, 0, 1, 1);
 
@@ -146,8 +133,8 @@ export const ExerciseFilters = styled.form<{ isHidden?: boolean }>`
     isHidden &&
     css`
       height: 0px;
-      ping-top: 0px !important;
-      ping-bottom: 0px !important;
+      padding-top: 0px !important;
+      padding-bottom: 0px !important;
       margin-bottom: 0px !important;
       overflow: hidden;
       transition: height 0.3s cubic-bezier(0, 0, 0.2, 1);
@@ -162,7 +149,7 @@ export const FilterArrowButton = styled.button<{ isHidden?: boolean }>`
   position: absolute;
   right: 12px;
   top: ${({ isHidden }) =>
-    isHidden ? "21px" : "calc(var(---exercise-filters-height) + 10px)"};
+    isHidden ? "21px" : "calc(var(--exercise-filters-height) + 10px)"};
   z-index: 3;
 
   height: 20px;

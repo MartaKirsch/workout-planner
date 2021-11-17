@@ -19,8 +19,8 @@ export const GlobalStyles = createGlobalStyle`
         --nav-padding: 32px;
         --iconbutton-width: 50px;
         --logobar-height: 70px;
-        --add-exercise-sidebar-width: 506px;
-        --add-exercise-filters-height: 375px;
+        --exercise-sidebar-width: 506px;
+        --exercise-filters-height: 375px;
         --exercise-tile-image-width:112px;
         --exercise-tile-padding:20px;
     }

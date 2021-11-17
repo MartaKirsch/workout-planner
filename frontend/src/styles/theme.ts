@@ -57,6 +57,10 @@ const theme = {
       bg: "var(--orange)",
       hoveredBg: "var(--dark-blue)",
     },
+    plainButton: {
+      textColor: "var(--dark-blue)",
+      bg: "var(--dark-blue)",
+    },
     addExercise: {
       sidebarBg: "var(--turqoise)",
       formBg: "var(--pale-blue)",
@@ -72,6 +76,7 @@ const theme = {
     },
   },
   borders: {
+    superThin: "2px",
     thiner: "3px",
     thin: "4px",
     medium: "6px",

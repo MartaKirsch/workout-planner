@@ -3,18 +3,16 @@ import Input from "components/shared/Input";
 import {
   ExerciseAllCheckboxWrapper,
   ExerciseCheckboxesWrapper,
-  ExerciseCheckboxWrapper,
   ExerciseSidebarWrapper,
   ExerciseFilters,
   ExerciseTypeButton,
   AllCheckboxText,
-  CheckboxInput,
   ExercisesList,
   FilterArrowButton,
   StyledSearchButton,
   StyledTick,
+  CheckboxInput,
 } from "./ExerciseSidebar.components";
-import IconButton from "components/shared/IconButton";
 import { ReactComponent as ArmsIcon } from "images/bodyParts/arms.svg";
 import { ReactComponent as LegsIcon } from "images/bodyParts/legs.svg";
 import { ReactComponent as AbsIcon } from "images/bodyParts/abs.svg";
@@ -29,6 +27,7 @@ import Loader from "components/Loader";
 import { ExerciseType } from "utils/types/exercise";
 import { checkIsUlElement } from "utils/functions/checkIsUlElement";
 import ExerciseTile from "components/shared/ExerciseSidebar/ExerciseTile";
+import CheckboxWithIcon from "../CheckboxWithIcon";
 
 const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
   {
@@ -145,21 +144,11 @@ const ExerciseSidebar: FunctionComponent<Props> = ({ onTileClick }) => {
         />
         <ExerciseCheckboxesWrapper spaceBetween>
           {IconButtons.map((item) => (
-            <ExerciseCheckboxWrapper key={item.name}>
-              <IconButton
-                icon={item.icon}
-                primaryColor="orange"
-                secondaryColor="yellow"
-                borderColor={
-                  bodyParts.indexOf(item.name) !== -1 ? "orange" : "darkBlue"
-                }
-              />
-              <CheckboxInput
-                type="checkbox"
-                onClick={() => modifyBodyParts(item.name)}
-                title={item.title}
-              />
-            </ExerciseCheckboxWrapper>
+            <CheckboxWithIcon
+              item={item}
+              onClick={() => modifyBodyParts(item.name)}
+              bodyParts={bodyParts}
+            />
           ))}
         </ExerciseCheckboxesWrapper>
         <ExerciseCheckboxesWrapper>

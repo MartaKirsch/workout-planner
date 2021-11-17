@@ -1,8 +1,17 @@
 import React, { FunctionComponent } from "react";
-import { AddExerciseFormWrapper } from "./AddExerciseForm.components";
+import Header from "components/shared/Header";
+import {
+  AddExerciseFormWrapper,
+  StyledPlainButton,
+} from "./AddExerciseForm.components";
 
 const AddExerciseForm: FunctionComponent = () => {
-  return <AddExerciseFormWrapper></AddExerciseFormWrapper>;
+  return (
+    <AddExerciseFormWrapper>
+      <Header text="Add new exercise" stretch />
+      <StyledPlainButton>Reset form</StyledPlainButton>
+    </AddExerciseFormWrapper>
+  );
 };
 
 export default AddExerciseForm;

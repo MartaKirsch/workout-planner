@@ -1,12 +1,18 @@
 import styled from "styled-components";
-import { centeredDiv } from "styles/mixins";
+import { columnDiv } from "styles/mixins";
+import PlainButton from "components/shared/PlainButton";
 
 export const AddExerciseFormWrapper = styled.main`
-  ${centeredDiv}
+  ${columnDiv}
 
   height: 100%;
-  width: calc(100% - var(--add-exercise-sidebar-width));
+  width: calc(100% - var(--exercise-sidebar-width));
   padding: 91px 141px;
 
   background-color: ${({ theme }) => theme.colors.addExercise.formBg};
+`;
+
+export const StyledPlainButton = styled(PlainButton)`
+  margin-top: 32px;
+  margin-left: auto;
 `;
