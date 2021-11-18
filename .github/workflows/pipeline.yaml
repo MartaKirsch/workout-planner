@@ -1,0 +1,76 @@
+name: Docker Image CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWD: ${{ secrets.DB_PASSWD }}
+      DB_ROOT_PASSWD: ${{ secrets.DB_ROOT_PASSWD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      PORT_BACKEND: ${{ secrets.PORT_BACKEND }}
+      ENABLE_CORS: ${{ secrets.ENABLE_CORS }}
+      CLIENT_HOST: ${{ secrets.CLIENT_HOST }}
+      COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+      GLOBAL_USER_PASSWD: ${{ secrets.GLOBAL_USER_PASSWD }}
+      PORT_FRONTEND: ${{ secrets.PORT_FRONTEND }}
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: create root env file
+        run: |
+          touch .env
+          echo DB_USER=${{ secrets.DB_USER }} >> .env
+          echo DB_PASSWD=${{ secrets.DB_PASSWD }} >> .env
+          echo DB_ROOT_PASSWD=${{ secrets.DB_ROOT_PASSWD }} >> .env
+          echo DATABASE=${{ secrets.DATABASE }} >> .env
+
+      - name: create back env file
+        run: |
+          touch ./backend/.env
+          echo PORT_BACKEND=8080 >> .env
+          echo ENABLE_CORS=${{ secrets.ENABLE_CORS }} >> ./backend/.env
+          echo CLIENT_HOST=${{ secrets.CLIENT_HOST }} >> ./backend/.env
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> ./backend/.env
+          echo GLOBAL_USER_PASSWD=${{ secrets.GLOBAL_USER_PASSWD }} >> ./backend/.env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> ./backend/.env
+
+      - name: create front env file
+        run: |
+          touch ./frontend/.env
+          echo PORT_FRONTEND=3000 >> ./frontend/.env
+
+      - name: 🐳 Build the docker-compose stack
+        run: docker-compose up -d
+
+      - name: 🌳 Cypress run
+        id: cypress
+        uses: cypress-io/github-action@v2
+        continue-on-error: false
+        with:
+          working-directory: ./frontend
+          command: npm run cypress:run
+          wait-on: "http://localhost:3000, http://localhost:8080"
+          record: false
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: frontend/cypress/screenshots
+
+      - name: Stop containers
+        # the containers should be stopped regardless of
+        # the test result
+        if: always()
+        run: docker-compose down
+
+      - name: Check on test failures
+        if: steps.cypress.outcome != 'success'
+        run: exit 1
