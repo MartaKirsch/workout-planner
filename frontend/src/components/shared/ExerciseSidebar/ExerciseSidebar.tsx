@@ -13,12 +13,6 @@ import {
   StyledTick,
   CheckboxInput,
 } from "./ExerciseSidebar.components";
-import { ReactComponent as ArmsIcon } from "images/bodyParts/arms.svg";
-import { ReactComponent as LegsIcon } from "images/bodyParts/legs.svg";
-import { ReactComponent as AbsIcon } from "images/bodyParts/abs.svg";
-import { ReactComponent as ChestIcon } from "images/bodyParts/chest.svg";
-import { ReactComponent as BackIcon } from "images/bodyParts/back.svg";
-import { ReactComponent as MultiIcon } from "images/bodyParts/multiJoint.svg";
 import { ReactComponent as DownArrowIcon } from "images/down.svg";
 import { ReactComponent as UpArrowIcon } from "images/up.svg";
 import { useExercisesContext } from "../../../context/ExercisesContext/useExercisesContext";
@@ -28,39 +22,7 @@ import { ExerciseType } from "utils/types/exercise";
 import { checkIsUlElement } from "utils/functions/checkIsUlElement";
 import ExerciseTile from "components/shared/ExerciseSidebar/ExerciseTile";
 import CheckboxWithIcon from "../CheckboxWithIcon";
-
-const IconButtons: { icon: JSX.Element; name: BodyPart; title: string }[] = [
-  {
-    icon: <ArmsIcon />,
-    name: "ARMS",
-    title: "Arms",
-  },
-  {
-    icon: <LegsIcon />,
-    name: "LEGS",
-    title: "Legs",
-  },
-  {
-    icon: <MultiIcon />,
-    name: "MULTI_JOINT",
-    title: "Multi-joint",
-  },
-  {
-    icon: <AbsIcon />,
-    name: "ABS",
-    title: "ABS",
-  },
-  {
-    icon: <ChestIcon />,
-    name: "CHEST",
-    title: "Chest",
-  },
-  {
-    icon: <BackIcon />,
-    name: "BACK",
-    title: "Back",
-  },
-];
+import { IconButtons } from "utils/const/iconButtons.const";
 
 interface Props {
   onTileClick?: () => void | Promise<void>;
@@ -145,6 +107,7 @@ const ExerciseSidebar: FunctionComponent<Props> = ({ onTileClick }) => {
         <ExerciseCheckboxesWrapper spaceBetween>
           {IconButtons.map((item) => (
             <CheckboxWithIcon
+              key={item.name}
               item={item}
               onClick={() => modifyBodyParts(item.name)}
               bodyParts={bodyParts}

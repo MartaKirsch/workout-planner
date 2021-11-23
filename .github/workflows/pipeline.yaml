@@ -33,7 +33,7 @@ jobs:
       - name: create back env file
         run: |
           touch ./backend/.env
-          echo PORT_BACKEND=8080 >> .env
+          echo PORT_BACKEND=8080 >> ./backend/.env
           echo ENABLE_CORS=${{ secrets.ENABLE_CORS }} >> ./backend/.env
           echo CLIENT_HOST=${{ secrets.CLIENT_HOST }} >> ./backend/.env
           echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> ./backend/.env

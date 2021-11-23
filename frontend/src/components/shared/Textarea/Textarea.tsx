@@ -1,50 +1,46 @@
-import React, { ChangeEvent, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import {
-  InputElement,
-  InputError,
-  InputUnderline,
   InputWrapper,
-} from "./Input.components";
-import Label from "components/shared/Label";
+  InputUnderline,
+  InputError,
+} from "../Input/Input.components";
+import Label from "../Label";
+import { TextareaElement } from "./Textarea.components";
 
 interface Props {
   label: string;
   placeholder?: string;
   errorMssg?: string;
-  type?: "text" | "password" | "search";
   register?: UseFormRegisterReturn;
   showLabel?: boolean;
   value?: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  biggerMargin?: boolean;
 }
 
-const Input: FunctionComponent<Props> = ({
+const Textarea: FunctionComponent<Props> = ({
   label,
   register,
   errorMssg,
   placeholder = `${label}...`,
-  type = "text",
   showLabel = true,
   value,
-  onChange,
+  biggerMargin,
 }) => {
   return (
-    <InputWrapper>
+    <InputWrapper biggerMargin={biggerMargin}>
       {showLabel && <Label htmlFor={label}>{label}</Label>}
-      <InputElement
+      <TextareaElement
         name={label}
         id={label}
         placeholder={placeholder}
-        type={type}
         value={value}
-        onChange={onChange}
         {...register}
       />
-      <InputUnderline isSearch={type === "search"} />
+      <InputUnderline />
       <InputError data-cy="input-error">{errorMssg}</InputError>
     </InputWrapper>
   );
 };
 
-export default Input;
+export default Textarea;

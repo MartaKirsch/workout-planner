@@ -26,7 +26,6 @@ export class ExerciseController {
     @Session() sess,
     @Body() body: ExerciseFiltersDto,
   ) {
-    console.log(body);
     try {
       const user = await this.userService.findUser(sess.user.name);
       if (!user) throw Error("No user found");

@@ -12,6 +12,7 @@ const theme = {
       dark: "var(--dark-blue)",
       light: "#FFFFFF",
       formError: "#000000",
+      accent: "var(--orange)",
     },
     families: {
       normal: "'Montserrat', sans-serif",

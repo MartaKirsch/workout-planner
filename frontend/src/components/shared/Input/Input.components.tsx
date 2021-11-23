@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { columnDiv } from "styles/mixins";
+import { columnDiv, defaultInputStyles } from "styles/mixins";
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.div<{ biggerMargin?: boolean }>`
   ${columnDiv}
 
   align-items: flex-start;
@@ -9,37 +9,12 @@ export const InputWrapper = styled.div`
   width: 100%;
 
   &:not(:first-child) {
-    margin-top: 42px;
+    margin-top: ${({ biggerMargin }) => (biggerMargin ? "60px" : "42px")};
   }
-`;
-
-export const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fonts.sizes.s};
-
-  cursor: pointer;
-
-  margin-bottom: 19px;
 `;
 
 export const InputElement = styled.input`
-  width: 100%;
-
-  padding: 26px 24px;
-
-  background-color: ${({ theme }) => theme.colors.input.bg};
-
-  color: ${({ theme }) => theme.colors.input.textColor};
-  font-size: ${({ theme }) => theme.fonts.sizes.base};
-
-  border-radius: 15px;
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.input.placeholderColor};
-  }
-
-  &:focus + div::after {
-    transform: scaleX(1);
-  }
+  ${defaultInputStyles}
 `;
 
 export const InputUnderline = styled.div<{ isSearch?: boolean }>`
