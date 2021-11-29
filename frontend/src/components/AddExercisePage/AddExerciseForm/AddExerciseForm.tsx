@@ -8,6 +8,8 @@ import {
   AddExerciseFormWrapper,
   StyledPlainButton,
   TypeOfExerciseSelect,
+  AddExerciseFileInput,
+  AddExerciseFakeFileInput,
 } from "./AddExerciseForm.components";
 import Input from "components/shared/Input";
 import Textarea from "components/shared/Textarea";
@@ -38,6 +40,7 @@ type Inputs = {
   description: string;
   bodyParts: BodyPart[];
   type: ExerciseType;
+  image: FileList[];
 };
 
 const AddExerciseForm: FunctionComponent = () => {
@@ -58,6 +61,7 @@ const AddExerciseForm: FunctionComponent = () => {
       });
       return;
     }
+
     console.log(data);
   };
 
@@ -102,6 +106,15 @@ const AddExerciseForm: FunctionComponent = () => {
               },
             })}
           />
+          <AddExerciseFieldset>
+            <Label>Image</Label>
+            <AddExerciseFileInput
+              type="file"
+              accept="image/png, image/gif, image/jpeg"
+              {...register("image", { required: false })}
+            />
+            <AddExerciseFakeFileInput>Browse file...</AddExerciseFakeFileInput>
+          </AddExerciseFieldset>
           <AddExerciseFieldset>
             <Label>Body parts affected</Label>
             <AddExerciseCheckboxesWrapper>

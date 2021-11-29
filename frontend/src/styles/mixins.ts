@@ -57,3 +57,17 @@ export const defaultInputStyles = css`
     transform: scaleX(1);
   }
 `;
+
+export const defaultBorderStyles = css`
+  padding: 17px 12px;
+
+  font-size: ${({ theme }) => theme.fonts.sizes.s};
+  font-family: ${({ theme }) => theme.fonts.families.fancy};
+  color: ${({ theme }) => theme.fonts.colors.accent};
+
+  background-color: ${({ theme }) => theme.colors.bg};
+
+  border-radius: 7px;
+  border: ${({ theme }) => theme.borders.thiner} solid
+    ${({ theme }) => theme.colors.iconButton.darkBlue};
+`;

@@ -1,5 +1,10 @@
 import styled, { css } from "styled-components";
-import { centeredDiv, columnDiv, spaceBetweenDiv } from "styles/mixins";
+import {
+  centeredDiv,
+  columnDiv,
+  defaultBorderStyles,
+  spaceBetweenDiv,
+} from "styles/mixins";
 import PlainButton from "components/shared/PlainButton";
 
 export const AddExerciseFormWrapper = styled.main`
@@ -86,27 +91,63 @@ export const AddExerciseFieldset = styled.div`
 
   margin: 60px 0 0;
 
+  position: relative;
+
   &:nth-last-child(2) {
     margin-bottom: 60px;
   }
 `;
 
 export const TypeOfExerciseSelect = styled.select`
-  padding: 17px 12px;
-
-  font-size: ${({ theme }) => theme.fonts.sizes.s};
-  font-family: ${({ theme }) => theme.fonts.families.fancy};
-  color: ${({ theme }) => theme.fonts.colors.accent};
-
-  background-color: ${({ theme }) => theme.colors.bg};
-
-  border-radius: 7px;
-  border: ${({ theme }) => theme.borders.thiner} solid
-    ${({ theme }) => theme.colors.iconButton.darkBlue};
+  ${defaultBorderStyles}
 
   option {
     font-size: ${({ theme }) => theme.fonts.sizes.s};
     font-family: ${({ theme }) => theme.fonts.families.normal};
     color: ${({ theme }) => theme.fonts.colors.dark};
+  }
+`;
+
+export const AddExerciseFileInput = styled.input`
+  width: var(--add-exercise-file-input-width);
+  height: var(--add-exercise-file-input-height);
+
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+
+  opacity: 0;
+
+  cursor: pointer;
+
+  &:focus + div::after,
+  &:hover + div::after {
+    opacity: 1;
+  }
+`;
+
+export const AddExerciseFakeFileInput = styled.div`
+  ${defaultBorderStyles}
+
+  cursor: pointer;
+
+  position: relative;
+
+  &::after {
+    content: "";
+    height: calc(2 * ${({ theme }) => theme.borders.thiner} + 100%);
+    width: calc(2 * ${({ theme }) => theme.borders.thiner} + 100%);
+
+    position: absolute;
+    top: ${({ theme }) => `-${theme.borders.thiner}`};
+    left: ${({ theme }) => `-${theme.borders.thiner}`};
+
+    border-radius: 7px;
+    border: ${({ theme }) => theme.borders.thiner} solid
+      ${({ theme }) => theme.colors.iconButton.orange};
+
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
   }
 `;

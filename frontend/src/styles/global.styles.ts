@@ -23,6 +23,8 @@ export const GlobalStyles = createGlobalStyle`
         --exercise-filters-height: 375px;
         --exercise-tile-image-width:112px;
         --exercise-tile-padding:20px;
+        --add-exercise-file-input-width:158px;
+        --add-exercise-file-input-height:60px;
     }
 
     *, *::after, *::before {
