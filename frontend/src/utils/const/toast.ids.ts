@@ -7,3 +7,5 @@ export const SESSION_CHECK_ERROR_TOASTID = "could-not-log-out";
 export const LOADING_EXERCISES_ERROR = "loading-exercises-error";
 
 export const BODY_PARTS_NUMBER_ERROR = "body-parts-number-error";
+
+export const ADD_EXERCISE_ERROR = "add-exercise-error";

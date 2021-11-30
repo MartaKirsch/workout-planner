@@ -19,7 +19,7 @@ import { useExercisesContext } from "../../../context/ExercisesContext/useExerci
 import { BodyPart } from "utils/types/bodyParts";
 import Loader from "components/Loader";
 import { ExerciseType } from "utils/types/exercise";
-import { checkIsUlElement } from "utils/functions/checkIsUlElement";
+import { checkIsUlElement } from "utils/typeGuards/checkIsUlElement.guard";
 import ExerciseTile from "components/shared/ExerciseSidebar/ExerciseTile";
 import CheckboxWithIcon from "../CheckboxWithIcon";
 import { IconButtons } from "utils/const/iconButtons.const";

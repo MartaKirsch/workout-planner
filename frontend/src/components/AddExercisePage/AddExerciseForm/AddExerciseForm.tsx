@@ -20,7 +20,10 @@ import CheckboxWithIcon from "components/shared/CheckboxWithIcon";
 import Label from "components/shared/Label";
 import Button from "components/shared/Button";
 import { toast } from "react-toastify";
-import { BODY_PARTS_NUMBER_ERROR } from "utils/const/toast.ids";
+import {
+  ADD_EXERCISE_ERROR,
+  BODY_PARTS_NUMBER_ERROR,
+} from "utils/const/toast.ids";
 import {
   AT_LEAST_ONE_BODY_PART_MSSG,
   EXERCISE_DESCRIPTION_MAX_LENGTH,
@@ -36,6 +39,8 @@ import {
 import { ExerciseType } from "utils/types/exercise";
 import axios from "axios";
 import { EXERCISES_URL } from "utils/backend.endpoints";
+import { handleErrorWithToast } from "utils/functions/handleErrorWithToast";
+import { isDtoError } from "utils/typeGuards/isDtoError.guard";
 
 type Inputs = {
   name: string;
@@ -52,6 +57,7 @@ const AddExerciseForm: FunctionComponent = () => {
     watch,
     reset,
     formState: { errors },
+    setError,
   } = useForm<Inputs>({
     defaultValues: { bodyParts: [] },
   });
@@ -79,7 +85,24 @@ const AddExerciseForm: FunctionComponent = () => {
       });
     } catch (e) {
       if (!(e instanceof Error) || !e) return;
-      alert(e.message);
+
+      if (isDtoError<keyof Inputs>(e)) {
+        e.response?.data.errors.forEach((err) => {
+          if (err.property === "name" || err.property === "description") {
+            setError(
+              err.property,
+              { message: err.message },
+              { shouldFocus: true }
+            );
+          } else {
+            toast.error(err.message, {
+              toastId: ADD_EXERCISE_ERROR + err.property,
+            });
+          }
+        });
+        return;
+      }
+      handleErrorWithToast(e, ADD_EXERCISE_ERROR);
     }
   };
 
@@ -104,7 +127,7 @@ const AddExerciseForm: FunctionComponent = () => {
                 message: EXERCISE_NAME_MAX_LENGTH_MSSG,
               },
               required: {
-                value: true,
+                value: false,
                 message: REQUIRED_MSSG,
               },
             })}

@@ -7,13 +7,12 @@ import React, {
   useState,
 } from "react";
 import axios, { CancelTokenSource, CancelTokenStatic } from "axios";
-import { toast } from "react-toastify";
 import { LOAD_EXERCISES_URL } from "utils/backend.endpoints";
 import { LOADING_EXERCISES_ERROR } from "utils/const/toast.ids";
-import { isAxiosError } from "utils/typeGuards/isAxiosError.guard";
 import { ExerciseT, ExerciseType } from "utils/types/exercise";
 import ExercisesContext from "./ExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
+import { handleErrorWithToast } from "utils/functions/handleErrorWithToast";
 
 const ExercisesContextProvider: FunctionComponent = ({ children }) => {
   const [isPending, setIsPending] = useState(true);
@@ -63,10 +62,10 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
           }
         );
 
-        console.log(newSkip ?? skip);
+        // console.log(newSkip ?? skip);
 
-        console.log(res.data);
-        console.log(oldExercises.current);
+        // console.log(res.data);
+        // console.log(oldExercises.current);
 
         oldExercises.current = [...oldExercises.current, ...res.data];
         if (skip !== 0) setExercises([...oldExercises.current]);
@@ -76,14 +75,7 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
       } catch (e) {
         if (!(e instanceof Error)) return;
 
-        if (isAxiosError(e)) {
-          toast.error(e.response?.data.message, {
-            toastId: LOADING_EXERCISES_ERROR,
-          });
-          return;
-        }
-
-        toast.error(e.message, { toastId: LOADING_EXERCISES_ERROR });
+        handleErrorWithToast(e, LOADING_EXERCISES_ERROR);
       } finally {
         setIsPending(false);
       }
