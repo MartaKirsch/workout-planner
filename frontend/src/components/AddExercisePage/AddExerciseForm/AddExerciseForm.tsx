@@ -34,13 +34,15 @@ import {
   REQUIRED_MSSG,
 } from "utils/const/addExerciseForm.const";
 import { ExerciseType } from "utils/types/exercise";
+import axios from "axios";
+import { EXERCISES_URL } from "utils/backend.endpoints";
 
 type Inputs = {
   name: string;
   description: string;
   bodyParts: BodyPart[];
   type: ExerciseType;
-  image: FileList[];
+  file: FileList;
 };
 
 const AddExerciseForm: FunctionComponent = () => {
@@ -54,7 +56,7 @@ const AddExerciseForm: FunctionComponent = () => {
     defaultValues: { bodyParts: [] },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!data.bodyParts.length) {
       toast.error(AT_LEAST_ONE_BODY_PART_MSSG, {
         toastId: BODY_PARTS_NUMBER_ERROR,
@@ -62,7 +64,23 @@ const AddExerciseForm: FunctionComponent = () => {
       return;
     }
 
-    console.log(data);
+    const formData = new FormData();
+    formData.append("file", data.file.item(0) as Blob);
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("type", data.type);
+    formData.append("bodyParts", JSON.stringify(data.bodyParts));
+
+    try {
+      await axios.post(EXERCISES_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (e) {
+      if (!(e instanceof Error) || !e) return;
+      alert(e.message);
+    }
   };
 
   return (
@@ -111,7 +129,7 @@ const AddExerciseForm: FunctionComponent = () => {
             <AddExerciseFileInput
               type="file"
               accept="image/png, image/gif, image/jpeg"
-              {...register("image", { required: false })}
+              {...register("file", { required: false })}
             />
             <AddExerciseFakeFileInput>Browse file...</AddExerciseFakeFileInput>
           </AddExerciseFieldset>

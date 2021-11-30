@@ -11,7 +11,6 @@ import * as MySQLStoreCreator from "express-mysql-session";
 import * as mysql2 from "mysql2/promise";
 import * as csurf from "csurf";
 import * as cookieParser from "cookie-parser";
-import { CsrfException } from "./exceptions/csrf.exception";
 import { GlobalFilter } from "./filters/global.filter";
 
 async function bootstrap() {
