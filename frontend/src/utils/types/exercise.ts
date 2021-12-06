@@ -11,3 +11,10 @@ export type ExerciseT = {
 };
 
 export type ExerciseType = "EXERCISE" | "STRETCH";
+
+export type ExerciseAddFormT = {
+  name: string;
+  description: string;
+  bodyParts: BodyPart[];
+  type: ExerciseType;
+};

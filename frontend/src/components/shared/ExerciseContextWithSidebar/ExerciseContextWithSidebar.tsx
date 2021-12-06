@@ -1,9 +1,10 @@
 import React, { FunctionComponent } from "react";
 import ExerciseSidebar from "components/shared/ExerciseSidebar";
 import ExercisesContextProvider from "context/ExercisesContext/ExercisesContextProvider";
+import { ExerciseT } from "utils/types/exercise";
 
 interface Props {
-  onTileClick?: () => void | Promise<void>;
+  onTileClick?: (e: ExerciseT) => void | Promise<void>;
 }
 
 const ExerciseContextWithSidebar: FunctionComponent<Props> = ({

@@ -18,14 +18,14 @@ import { ReactComponent as UpArrowIcon } from "images/up.svg";
 import { useExercisesContext } from "../../../context/ExercisesContext/useExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
 import Loader from "components/Loader";
-import { ExerciseType } from "utils/types/exercise";
+import { ExerciseT, ExerciseType } from "utils/types/exercise";
 import { checkIsUlElement } from "utils/typeGuards/checkIsUlElement.guard";
 import ExerciseTile from "components/shared/ExerciseSidebar/ExerciseTile";
 import CheckboxWithIcon from "../CheckboxWithIcon";
 import { IconButtons } from "utils/const/iconButtons.const";
 
 interface Props {
-  onTileClick?: () => void | Promise<void>;
+  onTileClick?: (e: ExerciseT) => void | Promise<void>;
 }
 
 const ExerciseSidebar: FunctionComponent<Props> = ({ onTileClick }) => {
@@ -158,7 +158,7 @@ const ExerciseSidebar: FunctionComponent<Props> = ({ onTileClick }) => {
               imgSrc={exercise.image}
               type={exercise.type}
               bodyParts={exercise.body_parts}
-              onClick={onTileClick}
+              onClick={() => onTileClick && onTileClick(exercise)}
             />
           ))}
         {isPending && <Loader key="loader" />}

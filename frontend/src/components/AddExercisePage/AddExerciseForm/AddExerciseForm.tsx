@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useMemo } from "react";
 import Header from "components/shared/Header";
 import {
   AddExerciseFieldset,
@@ -36,11 +36,12 @@ import {
   EXERCISE_NAME_MIN_LENGTH_MSSG,
   REQUIRED_MSSG,
 } from "utils/const/addExerciseForm.const";
-import { ExerciseType } from "utils/types/exercise";
+import { ExerciseAddFormT, ExerciseType } from "utils/types/exercise";
 import axios from "axios";
-import { EXERCISES_URL } from "utils/backend.endpoints";
+import { EXERCISES_URL, UPDATE_EXERCISES_URL } from "utils/backend.endpoints";
 import { handleErrorWithToast } from "utils/functions/handleErrorWithToast";
 import { isDtoError } from "utils/typeGuards/isDtoError.guard";
+import { useHistory } from "react-router-dom";
 
 type Inputs = {
   name: string;
@@ -50,7 +51,33 @@ type Inputs = {
   file: FileList;
 };
 
-const AddExerciseForm: FunctionComponent = () => {
+interface Props {
+  name?: string;
+  description?: string;
+  bodyParts?: BodyPart[];
+  type?: ExerciseType;
+  resetProps: () => void | Promise<void>;
+}
+
+const AddExerciseForm: FunctionComponent<Props> = ({
+  name,
+  description,
+  bodyParts,
+  type,
+  resetProps,
+}) => {
+  const history = useHistory();
+
+  const defaultValues = useMemo<ExerciseAddFormT | { bodyParts: BodyPart[] }>(
+    () => ({
+      bodyParts: bodyParts ?? [],
+      name,
+      description,
+      type,
+    }),
+    [bodyParts, description, name, type]
+  );
+
   const {
     register,
     handleSubmit,
@@ -59,8 +86,12 @@ const AddExerciseForm: FunctionComponent = () => {
     formState: { errors },
     setError,
   } = useForm<Inputs>({
-    defaultValues: { bodyParts: [] },
+    defaultValues,
   });
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!data.bodyParts.length) {
@@ -76,13 +107,15 @@ const AddExerciseForm: FunctionComponent = () => {
     formData.append("description", data.description);
     formData.append("type", data.type);
     formData.append("bodyParts", JSON.stringify(data.bodyParts));
+    if (name) formData.append("originalName", name);
 
     try {
-      await axios.post(EXERCISES_URL, formData, {
+      await axios.post(name ? UPDATE_EXERCISES_URL : EXERCISES_URL, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      history.go(0);
     } catch (e) {
       if (!(e instanceof Error) || !e) return;
 
@@ -109,8 +142,13 @@ const AddExerciseForm: FunctionComponent = () => {
   return (
     <AddExerciseFormWrapper>
       <AddExerciseFormContent>
-        <Header text="Add new exercise" stretch />
-        <StyledPlainButton onClick={() => reset()}>
+        <Header text={`${name ? "Modify your" : "Add new"} exercise`} stretch />
+        <StyledPlainButton
+          onClick={() => {
+            resetProps();
+            reset();
+          }}
+        >
           Reset form
         </StyledPlainButton>
         <AddExerciseFormElement onSubmit={handleSubmit(onSubmit)}>
@@ -182,7 +220,7 @@ const AddExerciseForm: FunctionComponent = () => {
               </TypeOfExerciseSelect>
             </AddExerciseCheckboxesWrapper>
           </AddExerciseFieldset>
-          <Button type="submit">Add</Button>
+          <Button type="submit">{name ? "Modify" : "Add"}</Button>
         </AddExerciseFormElement>
       </AddExerciseFormContent>
     </AddExerciseFormWrapper>

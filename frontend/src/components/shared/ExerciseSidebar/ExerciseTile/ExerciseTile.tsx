@@ -60,17 +60,19 @@ const ExerciseTile: FunctionComponent<Props> = ({
       <ExerciseTileWrapper onClick={onClick}>
         <ExerciseTileRow>
           <ExerciseTileImageWrapper>
-            <Tippy
-              content={
-                <ExerciseTileTippyImage
-                  src={`${IMAGES_URL}/${imgSrc}`}
-                  alt="exercise"
-                />
-              }
-              delay={500}
-            >
-              <ExerciseTileImage src={`${IMAGES_URL}/${imgSrc}`} />
-            </Tippy>
+            {imgSrc && (
+              <Tippy
+                content={
+                  <ExerciseTileTippyImage
+                    src={`${IMAGES_URL}/${imgSrc}`}
+                    alt="exercise"
+                  />
+                }
+                delay={500}
+              >
+                <ExerciseTileImage src={`${IMAGES_URL}/${imgSrc}`} />
+              </Tippy>
+            )}
           </ExerciseTileImageWrapper>
           <ExerciseTileCol>
             <ExerciseTileName>{name}</ExerciseTileName>

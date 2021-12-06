@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  InternalServerErrorException,
   Post,
   Session,
   UploadedFile,
@@ -13,6 +14,7 @@ import { UserGuard } from "src/guards/user.guard";
 import { UserService } from "../user/user.service";
 import { AddExerciseDto } from "./dto/addExercise.dto";
 import { ExerciseFiltersDto } from "./dto/exercise.filters.dto";
+import { UpdateExerciseDto } from "./dto/updateExercise.dto";
 import { ExerciseService } from "./exercise.service";
 
 @UseGuards(UserGuard)
@@ -64,6 +66,50 @@ export class ExerciseController {
         body,
         session.user.id,
         file ? file.filename : "",
+      );
+      return true;
+    } catch (e) {
+      throw new BadRequestException(
+        e.message ?? "Troubles with saving your exercise!",
+      );
+    }
+  }
+
+  @Post("/update")
+  @UseInterceptors(FileInterceptor("file"))
+  async updateExercise(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: UpdateExerciseDto,
+    @Session() session,
+  ) {
+    if (file) await this.exerciseService.minimizeFile(file);
+
+    //check for name
+    try {
+      await this.exerciseService.checkExerciseName(
+        session.user.id,
+        body.name,
+        body.originalName,
+      );
+    } catch (e) {
+      throw new BadRequestException({
+        isDtoError: true,
+        message: "Invalid data!",
+        errors: [{ property: "name", message: e.message }],
+      });
+    }
+
+    //find and update
+    try {
+      const exercise = await this.exerciseService.findExerciseByName(
+        body.originalName,
+      );
+
+      await this.exerciseService.updateExercise(
+        body,
+        session.user.id,
+        file ? file.filename : "",
+        exercise.id,
       );
       return true;
     } catch (e) {
