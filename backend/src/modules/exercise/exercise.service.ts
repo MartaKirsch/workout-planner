@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Post } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { ExerciseFiltersDto } from "./dto/exercise.filters.dto";
 import * as sharp from "sharp";
@@ -54,11 +54,7 @@ export class ExerciseService {
     }
   }
 
-  async addExercise(
-    data: AddExerciseDto,
-    author: string,
-    imgFilename?: string,
-  ) {
+  async addExercise(data: AddExerciseDto, author: string, imgFilename: string) {
     try {
       const exercise = await this.prisma.exercise.create({
         data: {
@@ -76,6 +72,29 @@ export class ExerciseService {
     } catch (e) {
       await unlinkSync("./public/" + imgFilename);
       throw new Error(e.message ?? "Could not save your exercise!");
+    }
+  }
+
+  async checkExerciseName(authorId: string, name: string) {
+    try {
+      const parts = name.toLowerCase().split(" ");
+      const exercises = await this.prisma.exercise.findMany({
+        where: {
+          author: { OR: [{ name: "global" }, { id: authorId }] },
+        },
+      });
+
+      exercises.forEach((exercise) => {
+        let isDoubled = true;
+        parts.forEach((part) => {
+          if (!exercise.name.toLowerCase().includes(part)) {
+            isDoubled = false;
+          }
+        });
+        if (isDoubled) throw new Error("This exercise already exists!");
+      });
+    } catch (e) {
+      throw new Error(e.message);
     }
   }
 }

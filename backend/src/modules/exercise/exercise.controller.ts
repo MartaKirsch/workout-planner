@@ -1,10 +1,8 @@
 import {
   BadRequestException,
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Post,
-  Req,
   Session,
   UploadedFile,
   UseGuards,
@@ -48,11 +46,24 @@ export class ExerciseController {
     @Session() session,
   ) {
     if (file) await this.exerciseService.minimizeFile(file);
+
+    //check for name
+    try {
+      await this.exerciseService.checkExerciseName(session.user.id, body.name);
+    } catch (e) {
+      throw new BadRequestException({
+        isDtoError: true,
+        message: "Invalid data!",
+        errors: [{ property: "name", message: e.message }],
+      });
+    }
+
+    //save
     try {
       await this.exerciseService.addExercise(
         body,
         session.user.id,
-        file.filename,
+        file ? file.filename : "",
       );
       return true;
     } catch (e) {
