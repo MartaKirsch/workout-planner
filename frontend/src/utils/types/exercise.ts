@@ -6,6 +6,7 @@ export type ExerciseT = {
   description: string;
   body_parts: { name: BodyPart }[];
   authorId: string;
+  author: { name: string };
   type: ExerciseType;
   image: string;
 };

@@ -64,7 +64,7 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
 
         // console.log(newSkip ?? skip);
 
-        // console.log(res.data);
+        console.log(res.data);
         // console.log(oldExercises.current);
 
         oldExercises.current = [...oldExercises.current, ...res.data];

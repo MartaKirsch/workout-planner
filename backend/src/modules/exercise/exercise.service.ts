@@ -33,10 +33,6 @@ export class ExerciseService {
     types,
     bodyParts,
   }: { username: string } & ExerciseFiltersDto) {
-    // const exercises = await this.prisma.exercise.findMany({ where: {
-    //     OR:[authorId:{equals:"global"}, authorId:{equals:author}]
-    // } ,include:{author}});
-
     const exercises = await this.prisma.exercise.findMany({
       where: {
         author: { OR: [{ name: "global" }, { name: username }] },
@@ -48,7 +44,7 @@ export class ExerciseService {
       take: 10,
       include: {
         body_parts: true,
-        author: false,
+        author: { select: { name: true } },
       },
     });
 

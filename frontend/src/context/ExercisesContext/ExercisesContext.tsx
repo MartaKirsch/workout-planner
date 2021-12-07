@@ -23,6 +23,7 @@ const ExercisesContextDataModel: {
       type: "EXERCISE",
       body_parts: [{ name: "ARMS" }, { name: "CHEST" }],
       authorId: "global",
+      author: { name: "global" },
     },
   ],
   bodyParts: ["ABS", "ARMS", "BACK", "CHEST", "LEGS", "MULTI_JOINT"],

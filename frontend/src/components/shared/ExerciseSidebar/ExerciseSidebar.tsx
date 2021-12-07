@@ -15,7 +15,7 @@ import {
 } from "./ExerciseSidebar.components";
 import { ReactComponent as DownArrowIcon } from "images/down.svg";
 import { ReactComponent as UpArrowIcon } from "images/up.svg";
-import { useExercisesContext } from "../../../context/ExercisesContext/useExercisesContext";
+import { useExercisesContext } from "context/ExercisesContext/useExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
 import Loader from "components/Loader";
 import { ExerciseT, ExerciseType } from "utils/types/exercise";

@@ -15,18 +15,21 @@ const AddExercisePage: FunctionComponent = () => {
     setProps(undefined);
   };
 
+  const { username } = useUserContext();
+
   return (
     <AddExercisePageWrapper>
       {!isLoggedIn && <Redirect to={BASE_ROUTE} />}
       <ExerciseContextWithSidebar
-        onTileClick={(e) =>
-          setProps({
-            name: e.name,
-            description: e.description,
-            bodyParts: e.body_parts.map((p) => p.name),
-            type: e.type,
-          })
-        }
+        onTileClick={(e) => {
+          username === e.author.name &&
+            setProps({
+              name: e.name,
+              description: e.description,
+              bodyParts: e.body_parts.map((p) => p.name),
+              type: e.type,
+            });
+        }}
       >
         <AddExerciseForm resetProps={resetProps} {...props} />
       </ExerciseContextWithSidebar>
