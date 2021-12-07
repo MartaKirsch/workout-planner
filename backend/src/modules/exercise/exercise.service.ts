@@ -5,6 +5,7 @@ import * as sharp from "sharp";
 import { unlinkSync, writeFile } from "fs";
 import { AddExerciseDto } from "./dto/addExercise.dto";
 import { UpdateExerciseDto } from "./dto/updateExercise.dto";
+import { BodyPartType } from "./types/bodyParts.type";
 
 sharp.cache(false);
 @Injectable()
@@ -19,6 +20,7 @@ export class ExerciseService {
             equals: name,
           },
         },
+        include: { body_parts: true },
       });
       return e;
     } catch (e) {
@@ -145,6 +147,21 @@ export class ExerciseService {
       console.log(e.message);
 
       throw new Error(e.message ?? "Could not save your exercise!");
+    }
+  }
+
+  async disconnectBodyParts(id: string, bodyParts: { name: BodyPartType }[]) {
+    try {
+      await this.prisma.exercise.update({
+        where: { id },
+        data: {
+          body_parts: {
+            disconnect: bodyParts.map((part) => ({ name: part.name })),
+          },
+        },
+      });
+    } catch (e) {
+      throw new Error(e.message);
     }
   }
 }

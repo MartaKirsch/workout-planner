@@ -105,6 +105,12 @@ export class ExerciseController {
         body.originalName,
       );
 
+      //disconnect previous body parts
+      await this.exerciseService.disconnectBodyParts(
+        exercise.id,
+        exercise.body_parts,
+      );
+
       await this.exerciseService.updateExercise(
         body,
         session.user.id,
