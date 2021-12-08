@@ -15,7 +15,9 @@ type exerciseType = {
   author: { connect: { id: string } };
   type: "STRETCH" | "EXERCISE";
   body_parts: {
-    connect: { name: BodyPart } | { name: BodyPart }[];
+    create:
+      | { create: { bPart: { connect: { name: BodyPart } } } }
+      | { create: { bPart: { connect: { name: BodyPart } } } }[];
   };
 };
 
@@ -61,9 +63,13 @@ const attachBodyPart = (
     arr = arr.map((item) => ({
       ...item,
       body_parts: {
-        connect: [
+        create: [
           ...bpart.map((part) => ({
-            name: part,
+            bPart: {
+              connect: {
+                name: part,
+              },
+            },
           })),
         ],
       },
@@ -71,7 +77,7 @@ const attachBodyPart = (
   } else {
     arr = arr.map((item) => ({
       ...item,
-      body_parts: { connect: { name: bpart } },
+      body_parts: { create: { bPart: { connect: { name: bpart } } } },
     }));
   }
   return arr;

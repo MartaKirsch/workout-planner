@@ -9,7 +9,11 @@ import React, {
 import axios, { CancelTokenSource, CancelTokenStatic } from "axios";
 import { LOAD_EXERCISES_URL } from "utils/backend.endpoints";
 import { LOADING_EXERCISES_ERROR } from "utils/const/toast.ids";
-import { ExerciseT, ExerciseType } from "utils/types/exercise";
+import {
+  ExerciseResponseT,
+  ExerciseT,
+  ExerciseType,
+} from "utils/types/exercise";
 import ExercisesContext from "./ExercisesContext";
 import { BodyPart } from "utils/types/bodyParts";
 import { handleErrorWithToast } from "utils/functions/handleErrorWithToast";
@@ -49,7 +53,7 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
       cancelToken.current = axios.CancelToken.source();
 
       try {
-        const res = await axios.post<ExerciseT[]>(
+        const res = await axios.post<ExerciseResponseT[]>(
           LOAD_EXERCISES_URL,
           {
             skip: newSkip ?? skip,
@@ -67,11 +71,16 @@ const ExercisesContextProvider: FunctionComponent = ({ children }) => {
         console.log(res.data);
         // console.log(oldExercises.current);
 
-        oldExercises.current = [...oldExercises.current, ...res.data];
+        const arrangedData = res.data.map((e) => ({
+          ...e,
+          body_parts: e.body_parts.map((part) => ({ name: part.bPartId })),
+        }));
+
+        oldExercises.current = [...oldExercises.current, ...arrangedData];
         if (skip !== 0) setExercises([...oldExercises.current]);
         else if (newSkip && newSkip !== 0)
           setExercises([...oldExercises.current]);
-        else setExercises([...res.data]);
+        else setExercises([...arrangedData]);
       } catch (e) {
         if (!(e instanceof Error)) return;
 

@@ -108,7 +108,7 @@ export class ExerciseController {
       //disconnect previous body parts
       await this.exerciseService.disconnectBodyParts(
         exercise.id,
-        exercise.body_parts,
+        exercise.body_parts.map((p) => ({ name: p.bPartId, id: p.id })),
       );
 
       await this.exerciseService.updateExercise(

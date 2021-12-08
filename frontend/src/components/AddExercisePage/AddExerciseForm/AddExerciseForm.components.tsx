@@ -52,7 +52,7 @@ export const AddExerciseFormContent = styled.div`
 
 export const StyledPlainButton = styled(PlainButton)`
   margin-top: 32px;
-  margin-left: auto;
+  /* margin-left: auto; */
 `;
 
 export const AddExerciseFormElement = styled.form`
@@ -149,5 +149,15 @@ export const AddExerciseFakeFileInput = styled.div`
 
     opacity: 0;
     transition: opacity 0.2s ease-out;
+  }
+`;
+
+export const AddExercisePlainButtonWrapper = styled.div`
+  ${spaceBetweenDiv}
+
+  width:100%;
+
+  ${StyledPlainButton}:last-child {
+    margin-left: auto;
   }
 `;

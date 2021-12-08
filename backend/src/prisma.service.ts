@@ -38,6 +38,16 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         },
       });
     }
+    // await this.exercise.create({
+    //   data: {
+    //     name: "a",
+    //     description: "v",
+    //     image: "s",
+    //     type: "EXERCISE",
+    //     author: { connect: { id: "global" } },
+    //     body_parts: { create: { bPart: { connect: { name: "ABS" } } } },
+    //   },
+    // });
 
     if (numOfExercises === 0) {
       exercisesData.forEach(

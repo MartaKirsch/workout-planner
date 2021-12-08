@@ -1,4 +1,4 @@
-import { Injectable, Post } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { ExerciseFiltersDto } from "./dto/exercise.filters.dto";
 import * as sharp from "sharp";
@@ -38,7 +38,7 @@ export class ExerciseService {
     const exercises = await this.prisma.exercise.findMany({
       where: {
         author: { OR: [{ name: "global" }, { name: username }] },
-        body_parts: { some: { name: { in: bodyParts } } },
+        body_parts: { some: { bPartId: { in: bodyParts } } },
         type: { in: types },
         name: { contains: pattern },
       },
@@ -70,12 +70,20 @@ export class ExerciseService {
 
   async addExercise(data: AddExerciseDto, author: string, imgFilename: string) {
     try {
+      const bParts = JSON.parse(data.bodyParts);
+
       const exercise = await this.prisma.exercise.create({
         data: {
           name: data.name,
           description: data.description,
           body_parts: {
-            connect: JSON.parse(data.bodyParts).map((part) => ({ name: part })),
+            create: bParts.map((part) => ({
+              bPart: {
+                connect: {
+                  name: part,
+                },
+              },
+            })),
           },
           type: data.type,
           image: imgFilename,
@@ -126,11 +134,18 @@ export class ExerciseService {
     id: string,
   ) {
     try {
+      const bParts = JSON.parse(data.bodyParts);
       const newData = {
         name: data.name,
         description: data.description,
         body_parts: {
-          connect: JSON.parse(data.bodyParts).map((part) => ({ name: part })),
+          create: bParts.map((part) => ({
+            bPart: {
+              connect: {
+                name: part,
+              },
+            },
+          })),
         },
         type: data.type,
         author: { connect: { id: author } },
@@ -150,13 +165,18 @@ export class ExerciseService {
     }
   }
 
-  async disconnectBodyParts(id: string, bodyParts: { name: BodyPartType }[]) {
+  async disconnectBodyParts(
+    id: string,
+    bodyParts: { name: BodyPartType; id: number }[],
+  ) {
     try {
       await this.prisma.exercise.update({
         where: { id },
         data: {
           body_parts: {
-            disconnect: bodyParts.map((part) => ({ name: part.name })),
+            disconnect: bodyParts.map((part) => ({
+              id: part.id,
+            })),
           },
         },
       });

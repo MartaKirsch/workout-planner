@@ -10,6 +10,7 @@ import {
   TypeOfExerciseSelect,
   AddExerciseFileInput,
   AddExerciseFakeFileInput,
+  AddExercisePlainButtonWrapper,
 } from "./AddExerciseForm.components";
 import Input from "components/shared/Input";
 import Textarea from "components/shared/Textarea";
@@ -143,14 +144,26 @@ const AddExerciseForm: FunctionComponent<Props> = ({
     <AddExerciseFormWrapper>
       <AddExerciseFormContent>
         <Header text={`${name ? "Modify your" : "Add new"} exercise`} stretch />
-        <StyledPlainButton
-          onClick={() => {
-            resetProps();
-            reset();
-          }}
-        >
-          Reset form
-        </StyledPlainButton>
+        <AddExercisePlainButtonWrapper>
+          {name && (
+            <StyledPlainButton
+              onClick={() => {
+                resetProps();
+                reset();
+              }}
+            >
+              Delete exercise
+            </StyledPlainButton>
+          )}
+          <StyledPlainButton
+            onClick={() => {
+              resetProps();
+              reset();
+            }}
+          >
+            Reset form
+          </StyledPlainButton>
+        </AddExercisePlainButtonWrapper>
         <AddExerciseFormElement onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Exercise name"
