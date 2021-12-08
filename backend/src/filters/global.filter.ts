@@ -24,6 +24,8 @@ export class GlobalFilter implements ExceptionFilter {
       return;
     }
 
-    response.status(400).json({ message: "Unhandled server error" });
+    response
+      .status(400)
+      .json({ message: exception.message ?? "Unhandled server error" });
   }
 }

@@ -6,11 +6,17 @@ const theme = {
       s: "16px",
       base: "18px",
       m: "24px",
+      l: "26px",
     },
     colors: {
       dark: "var(--dark-blue)",
       light: "#FFFFFF",
       formError: "#000000",
+      accent: "var(--orange)",
+    },
+    families: {
+      normal: "'Montserrat', sans-serif",
+      fancy: "'Revalia', cursive",
     },
   },
   colors: {
@@ -43,6 +49,7 @@ const theme = {
       bg: "#FFFFFF",
       underlineColor: "var(--yellow)",
       underlineActiveColor: "var(--turqoise)",
+      underlineAltActiveColor: "var(--orange)",
       placeholderColor: "var(--darker-pale-blue)",
       textColor: "var(--dark-blue)",
     },
@@ -51,8 +58,26 @@ const theme = {
       bg: "var(--orange)",
       hoveredBg: "var(--dark-blue)",
     },
+    plainButton: {
+      textColor: "var(--dark-blue)",
+      bg: "var(--dark-blue)",
+    },
+    addExercise: {
+      sidebarBg: "var(--turqoise)",
+      formBg: "var(--pale-blue)",
+      scrollbarThumb: "var(--dark-blue)",
+      scrollbarThumbActive: "var(--lighter-dark-blue)",
+    },
+    exerciseTile: {
+      bg: "var(--dark-blue)",
+      activeBg: "var(--lighter-dark-blue)",
+      color: "white",
+      tagColor: "var(--pale-blue)",
+      imgPlaceholderBg: "var(--pale-blue)",
+    },
   },
   borders: {
+    superThin: "2px",
     thiner: "3px",
     thin: "4px",
     medium: "6px",

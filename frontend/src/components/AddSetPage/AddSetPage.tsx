@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { useUserContext } from "components/UserContext/useUserContext";
+import { useUserContext } from "context/UserContext/useUserContext";
 import { Redirect } from "react-router";
 import { BASE_ROUTE } from "utils/routes";
 

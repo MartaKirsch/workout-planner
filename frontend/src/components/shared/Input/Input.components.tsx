@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { columnDiv } from "styles/mixins";
+import { columnDiv, defaultInputStyles } from "styles/mixins";
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.div<{ biggerMargin?: boolean }>`
   ${columnDiv}
 
   align-items: flex-start;
@@ -9,39 +9,15 @@ export const InputWrapper = styled.div`
   width: 100%;
 
   &:not(:first-child) {
-    margin-top: 42px;
+    margin-top: ${({ biggerMargin }) => (biggerMargin ? "60px" : "42px")};
   }
-`;
-
-export const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fonts.sizes.s};
-
-  cursor: pointer;
 `;
 
 export const InputElement = styled.input`
-  width: 100%;
-
-  padding: 26px 24px;
-  margin-top: 19px;
-
-  background-color: ${({ theme }) => theme.colors.input.bg};
-
-  color: ${({ theme }) => theme.colors.input.textColor};
-  font-size: ${({ theme }) => theme.fonts.sizes.base};
-
-  border-radius: 15px;
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.input.placeholderColor};
-  }
-
-  &:focus + div::after {
-    transform: scaleX(1);
-  }
+  ${defaultInputStyles}
 `;
 
-export const InputUnderline = styled.div`
+export const InputUnderline = styled.div<{ isSearch?: boolean }>`
   width: 100%;
   height: ${({ theme }) => theme.borders.thick};
 
@@ -59,7 +35,10 @@ export const InputUnderline = styled.div`
     width: 100%;
     height: 100%;
 
-    background-color: ${({ theme }) => theme.colors.input.underlineActiveColor};
+    background-color: ${({ theme, isSearch }) =>
+      isSearch
+        ? theme.colors.input.underlineAltActiveColor
+        : theme.colors.input.underlineActiveColor};
 
     transform: scaleX(0);
     transform-origin: 0% 50%;

@@ -8,7 +8,7 @@ import { ReactComponent as AddRoutineIcon } from "images/addSet.svg";
 import { ReactComponent as LogoutIcon } from "images/logIn.svg";
 import NavButton from "./NavButton";
 import { ADD_EXERCISE_ROUTE, ADD_SET_ROUTE, BASE_ROUTE } from "utils/routes";
-import { useUserContext } from "components/UserContext/useUserContext";
+import { useUserContext } from "context/UserContext/useUserContext";
 import axios from "axios";
 import { LOGOUT_USER_URL } from "utils/backend.endpoints";
 import { userResponseType } from "utils/types/user.response";

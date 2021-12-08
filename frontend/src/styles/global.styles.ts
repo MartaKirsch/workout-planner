@@ -6,6 +6,7 @@ export const GlobalStyles = createGlobalStyle`
     :root {
         --yellow: #FFB703;
         --orange: #FB8500;
+        --darker-orange: #EA7400;
         --tangerine: #F2CC8F;
         --pale: #F4F1DE;
         --dark-blue: #023047;
@@ -18,6 +19,12 @@ export const GlobalStyles = createGlobalStyle`
         --nav-padding: 32px;
         --iconbutton-width: 50px;
         --logobar-height: 70px;
+        --exercise-sidebar-width: 506px;
+        --exercise-filters-height: 375px;
+        --exercise-tile-image-width:112px;
+        --exercise-tile-padding:20px;
+        --add-exercise-file-input-width:158px;
+        --add-exercise-file-input-height:60px;
     }
 
     *, *::after, *::before {

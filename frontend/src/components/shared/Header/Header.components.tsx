@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { centeredDiv } from "../../../styles/mixins";
 
-export const HeaderWrapper = styled.header`
-  width: 588px;
+export const HeaderWrapper = styled.header<{ stretch?: boolean }>`
+  width: ${({ stretch }) => (stretch ? "100%" : "588px")};
   height: 25px;
 
   ${centeredDiv}

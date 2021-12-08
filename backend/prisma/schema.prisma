@@ -10,9 +10,49 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Type {
+  STRETCH
+  EXERCISE
+}
+
+enum BodyPartName {
+  ARMS
+  LEGS
+  ABS
+  BACK
+  MULTI_JOINT
+  CHEST
+}
+
+model BodyPart {
+  name BodyPartName @id
+  exercise BodyPartsOnExercise[]
+}
+
 model User {
-  id    Int     @default(autoincrement()) @id
+  id    String     @default(uuid()) @id
   email String  @unique
   name  String  @unique
   password String
+  exercises Exercise[]
 }
+
+model Exercise {
+  id    String     @default(uuid()) @id
+  name String 
+  description String
+  body_parts BodyPartsOnExercise[] 
+  author User @relation(fields: [authorId], references: [id])
+  authorId   String  
+  type Type
+  image String
+}
+
+model BodyPartsOnExercise {  
+  id Int @id @default(autoincrement())
+  exercise   Exercise? @relation(fields: [exerciseId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  bPart    BodyPart?  @relation(fields: [bPartId], references: [name], onUpdate: Cascade, onDelete: Cascade)
+  exerciseId String?
+  bPartId  BodyPartName?
+}
+
