@@ -20,7 +20,7 @@ export class ExerciseService {
             equals: name,
           },
         },
-        include: { body_parts: true },
+        include: { body_parts: true, author: { select: { name: true } } },
       });
       return e;
     } catch (e) {
@@ -180,6 +180,16 @@ export class ExerciseService {
           },
         },
       });
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async checkPermissions(exerciseName: string, username: string) {
+    try {
+      const exercise = await this.findExerciseByName(exerciseName);
+      if (exercise.author.name === username) return true;
+      else throw new Error("You don't have permissions to this exercise!");
     } catch (e) {
       throw new Error(e.message);
     }

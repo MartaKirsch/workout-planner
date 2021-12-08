@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
   Post,
   Session,
+  UnauthorizedException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -82,6 +83,14 @@ export class ExerciseController {
     @Body() body: UpdateExerciseDto,
     @Session() session,
   ) {
+    //check permissions
+    try {
+      await this.exerciseService.checkPermissions(body.name, session.user.name);
+    } catch (e) {
+      throw new UnauthorizedException(e.message);
+    }
+
+    //minimize file
     if (file) await this.exerciseService.minimizeFile(file);
 
     //check for name
