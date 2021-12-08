@@ -10,3 +10,4 @@ export const IMAGES_URL = `${BASE_URL}/images`;
 export const EXERCISES_URL = `${BASE_URL}/exercise`;
 export const LOAD_EXERCISES_URL = `${EXERCISES_URL}/find`;
 export const UPDATE_EXERCISES_URL = `${EXERCISES_URL}/update`;
+export const DELETE_EXERCISES_URL = `${EXERCISES_URL}/delete`;

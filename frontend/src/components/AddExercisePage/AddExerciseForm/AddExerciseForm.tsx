@@ -39,7 +39,11 @@ import {
 } from "utils/const/addExerciseForm.const";
 import { ExerciseAddFormT, ExerciseType } from "utils/types/exercise";
 import axios from "axios";
-import { EXERCISES_URL, UPDATE_EXERCISES_URL } from "utils/backend.endpoints";
+import {
+  DELETE_EXERCISES_URL,
+  EXERCISES_URL,
+  UPDATE_EXERCISES_URL,
+} from "utils/backend.endpoints";
 import { handleErrorWithToast } from "utils/functions/handleErrorWithToast";
 import { isDtoError } from "utils/typeGuards/isDtoError.guard";
 import { useHistory } from "react-router-dom";
@@ -140,18 +144,24 @@ const AddExerciseForm: FunctionComponent<Props> = ({
     }
   };
 
+  const onDelete = async () => {
+    try {
+      await axios.post(DELETE_EXERCISES_URL, { name });
+      history.go(0);
+    } catch (e) {
+      if (!(e instanceof Error) || !e) return;
+
+      handleErrorWithToast(e, ADD_EXERCISE_ERROR);
+    }
+  };
+
   return (
     <AddExerciseFormWrapper>
       <AddExerciseFormContent>
         <Header text={`${name ? "Modify your" : "Add new"} exercise`} stretch />
         <AddExercisePlainButtonWrapper>
           {name && (
-            <StyledPlainButton
-              onClick={() => {
-                resetProps();
-                reset();
-              }}
-            >
+            <StyledPlainButton onClick={onDelete}>
               Delete exercise
             </StyledPlainButton>
           )}

@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Body,
   Controller,
-  InternalServerErrorException,
   Post,
   Session,
   UnauthorizedException,
@@ -14,6 +13,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { UserGuard } from "src/guards/user.guard";
 import { UserService } from "../user/user.service";
 import { AddExerciseDto } from "./dto/addExercise.dto";
+import { DeleteExerciseDto } from "./dto/deleteExercise.dto";
 import { ExerciseFiltersDto } from "./dto/exercise.filters.dto";
 import { UpdateExerciseDto } from "./dto/updateExercise.dto";
 import { ExerciseService } from "./exercise.service";
@@ -48,7 +48,7 @@ export class ExerciseController {
     @Body() body: AddExerciseDto,
     @Session() session,
   ) {
-    if (file) await this.exerciseService.minimizeFile(file);
+    // if (file) await this.exerciseService.minimizeFile(file);
 
     //check for name
     try {
@@ -76,7 +76,7 @@ export class ExerciseController {
     }
   }
 
-  @Post("/update")
+  @Post("update")
   @UseInterceptors(FileInterceptor("file"))
   async updateExercise(
     @UploadedFile() file: Express.Multer.File,
@@ -85,13 +85,16 @@ export class ExerciseController {
   ) {
     //check permissions
     try {
-      await this.exerciseService.checkPermissions(body.name, session.user.name);
+      await this.exerciseService.checkPermissions(
+        body.originalName,
+        session.user.name,
+      );
     } catch (e) {
       throw new UnauthorizedException(e.message);
     }
 
     //minimize file
-    if (file) await this.exerciseService.minimizeFile(file);
+    // if (file) await this.exerciseService.minimizeFile(file);
 
     //check for name
     try {
@@ -120,6 +123,9 @@ export class ExerciseController {
         exercise.body_parts.map((p) => ({ name: p.bPartId, id: p.id })),
       );
 
+      //if update of img, delete previous
+      if (file) await this.exerciseService.deleteImage(exercise.image);
+
       await this.exerciseService.updateExercise(
         body,
         session.user.id,
@@ -130,6 +136,40 @@ export class ExerciseController {
     } catch (e) {
       throw new BadRequestException(
         e.message ?? "Troubles with saving your exercise!",
+      );
+    }
+  }
+
+  @Post("delete")
+  async deleteExercise(@Body() body: DeleteExerciseDto, @Session() session) {
+    //check permissions
+    try {
+      await this.exerciseService.checkPermissions(body.name, session.user.name);
+    } catch (e) {
+      throw new UnauthorizedException(e.message);
+    }
+
+    //find and delete
+    try {
+      const exercise = await this.exerciseService.findExerciseByName(body.name);
+
+      //disconnect previous body parts
+      // await this.exerciseService.disconnectBodyParts(
+      //   exercise.id,
+      //   exercise.body_parts.map((p) => ({ name: p.bPartId, id: p.id })),
+      // );
+
+      //delete exercise
+      await this.exerciseService.deleteExercise(exercise.id);
+
+      //delete image
+      if (exercise.image !== "")
+        await this.exerciseService.deleteImage(exercise.image);
+
+      return true;
+    } catch (e) {
+      throw new BadRequestException(
+        e.message ?? "Troubles with deleting your exercise!",
       );
     }
   }

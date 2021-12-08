@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { ExerciseFiltersDto } from "./dto/exercise.filters.dto";
-import * as sharp from "sharp";
-import { unlinkSync, writeFile } from "fs";
+// import * as sharp from "sharp";
+import { fstat, unlinkSync, writeFile } from "fs";
 import { AddExerciseDto } from "./dto/addExercise.dto";
 import { UpdateExerciseDto } from "./dto/updateExercise.dto";
 import { BodyPartType } from "./types/bodyParts.type";
 
-sharp.cache(false);
+// sharp.cache(false);
 @Injectable()
 export class ExerciseService {
   constructor(private prisma: PrismaService) {}
@@ -53,20 +53,20 @@ export class ExerciseService {
     return exercises;
   }
 
-  async minimizeFile(file: Express.Multer.File) {
-    try {
-      await sharp("./public/" + file.filename)
-        .jpeg({ quality: 50 })
-        .toBuffer(function (_, buffer) {
-          writeFile("./public/" + file.filename, buffer, (e) => {
-            if (e) throw new Error(e.message ?? "Could not compress the file!");
-          });
-        });
-      return true;
-    } catch (e) {
-      throw new Error(e.message ?? "Could not compress the file!");
-    }
-  }
+  // async minimizeFile(file: Express.Multer.File) {
+  //   try {
+  //     await sharp("./public/" + file.filename)
+  //       .jpeg({ quality: 50 })
+  //       .toBuffer(function (_, buffer) {
+  //         writeFile("./public/" + file.filename, buffer, (e) => {
+  //           if (e) throw new Error(e.message ?? "Could not compress the file!");
+  //         });
+  //       });
+  //     return true;
+  //   } catch (e) {
+  //     throw new Error(e.message ?? "Could not compress the file!");
+  //   }
+  // }
 
   async addExercise(data: AddExerciseDto, author: string, imgFilename: string) {
     try {
@@ -158,7 +158,7 @@ export class ExerciseService {
       });
       return exercise;
     } catch (e) {
-      if (imgFilename) await unlinkSync("./public/" + imgFilename);
+      if (imgFilename) await this.deleteImage(imgFilename);
       console.log(e.message);
 
       throw new Error(e.message ?? "Could not save your exercise!");
@@ -192,6 +192,25 @@ export class ExerciseService {
       else throw new Error("You don't have permissions to this exercise!");
     } catch (e) {
       throw new Error(e.message);
+    }
+  }
+
+  async deleteExercise(id: string) {
+    try {
+      const exercise = await this.prisma.exercise.delete({
+        where: { id },
+      });
+      return exercise;
+    } catch (e) {
+      throw new Error(e.message ?? "Could not save your exercise!");
+    }
+  }
+
+  async deleteImage(url) {
+    try {
+      await unlinkSync("./public/" + url);
+    } catch (e) {
+      throw new Error("Could not delete the exercise");
     }
   }
 }
